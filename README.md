@@ -1,2 +1,2 @@
 # ZombiesSkript
- A remake of fundementals in hypixel zombies in Skript (it's not the exact same)
+ A remake of the fundementals of hypixel zombies in Skript (Spoiler: it's not the exact same as Hypixel's version)
