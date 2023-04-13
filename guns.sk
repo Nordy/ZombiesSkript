@@ -1,8 +1,15 @@
-function creategun(name: text, item: item, displayname: text, lore: texts, damage: number, ammo: number, clip: number, firerate: number, reload: number, particle: text, goldshot: number, goldcrit: number, sound: text, pitch: number, reference: text = "none", burst: number = 1, burstcooldown: number = 0):
+function creategun(name: text, item: item, displayname: text, lore: texts, damage: number, ammo: number, clip: number, firerate: number, reload: number, particle: text, goldshot: number, goldcrit: number, sound: text, pitch: number, reference: text = "none", shotgun: number = 0, burst: number = 1, burstcooldown: number = 0):
     if {_reference} is "none":
-        set {zombies::items::%{_name}%::item} to {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a%{_damage}% HP", "&7✏ Ammo: &a%{_ammo}%", "&7✒ Clip ammo: &a%{_clip}%", "&7⌛ Fire rate: &a%{_firerate}%s", "&7↩  Reload: &a%{_reload}%s", "&7＄ Gold: &a%{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden
+        if {_shotgun} is bigger than 0:
+            broadcast "%{_name}%, %{_reference}%"
+            set {zombies::items::%{_name}%::item} to {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a%{_damage}%*%{_shotgun}% HP", "&7✏ Ammo: &a%{_ammo}%", "&7✒ Clip ammo: &a%{_clip}%", "&7⌛ Fire rate: &a%{_firerate}%s", "&7↩  Reload: &a%{_reload}%s", "&7＄ Gold: &a%{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden 
+        else:
+            set {zombies::items::%{_name}%::item} to {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a%{_damage}% HP", "&7✏ Ammo: &a%{_ammo}%", "&7✒ Clip ammo: &a%{_clip}%", "&7⌛ Fire rate: &a%{_firerate}%s", "&7↩  Reload: &a%{_reload}%s", "&7＄ Gold: &a%{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden
     else:
-        set {zombies::items::%{_name}%::item} to glowing {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a&m%{zombies::items::%{_reference}%::damage}% HP&6  --> %{_damage}% HP", "&7✏ Ammo: &a&m%{zombies::items::%{_reference}%::ammo}%&6  -->  %{_ammo}%", "&7✒ Clip ammo: &a&m%{zombies::items::%{_reference}%::clip}%&6  -->  %{_clip}%", "&7⌛ Fire rate: &a&m%{zombies::items::%{_reference}%::firerate}%s&6  -->  %{_firerate}%s", "&7↩  Reload: &a&m%{zombies::items::%{_reference}%::reload}%s&6  -->  %{_reload}%s", "&7＄ Gold: &a&m%{zombies::items::%{_reference}%::goldshot}% (%{zombies::items::%{_reference}%::goldcrit}%)&6  -->  %{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden
+        if {_shotgun} is bigger than 0:
+            set {zombies::items::%{_name}%::item} to glowing {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a&m%{zombies::items::%{_reference}%::damage}%*%{zombies::items::%{_reference}%::shotgun}% HP&6  --> %{_damage}%*%{_shotgun}% HP", "&7✏ Ammo: &a&m%{zombies::items::%{_reference}%::ammo}%&6  -->  %{_ammo}%", "&7✒ Clip ammo: &a&m%{zombies::items::%{_reference}%::clip}%&6  -->  %{_clip}%", "&7⌛ Fire rate: &a&m%{zombies::items::%{_reference}%::firerate}%s&6  -->  %{_firerate}%s", "&7↩  Reload: &a&m%{zombies::items::%{_reference}%::reload}%s&6  -->  %{_reload}%s", "&7＄ Gold: &a&m%{zombies::items::%{_reference}%::goldshot}% (%{zombies::items::%{_reference}%::goldcrit}%)&6  -->  %{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden
+        else:
+            set {zombies::items::%{_name}%::item} to glowing {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a&m%{zombies::items::%{_reference}%::damage}% HP&6  --> %{_damage}% HP", "&7✏ Ammo: &a&m%{zombies::items::%{_reference}%::ammo}%&6  -->  %{_ammo}%", "&7✒ Clip ammo: &a&m%{zombies::items::%{_reference}%::clip}%&6  -->  %{_clip}%", "&7⌛ Fire rate: &a&m%{zombies::items::%{_reference}%::firerate}%s&6  -->  %{_firerate}%s", "&7↩  Reload: &a&m%{zombies::items::%{_reference}%::reload}%s&6  -->  %{_reload}%s", "&7＄ Gold: &a&m%{zombies::items::%{_reference}%::goldshot}% (%{zombies::items::%{_reference}%::goldcrit}%)&6  -->  %{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden
 
     set {zombies::items::%{_name}%::damage} to {_damage}
     set {zombies::items::%{_name}%::ammo} to {_ammo}
@@ -14,6 +21,7 @@ function creategun(name: text, item: item, displayname: text, lore: texts, damag
     set {zombies::items::%{_name}%::goldcrit} to {_goldcrit}
     set {zombies::items::%{_name}%::sound} to {_sound}
     set {zombies::items::%{_name}%::pitch} to {_pitch}
+    set {zombies::items::%{_name}%::shotgun} to {_shotgun}
     set {zombies::items::%{_name}%::burst} to {_burst}
     set {zombies::items::%{_name}%::burstcooldown} to {_burstcooldown}
     send "&a(!) Registered custom gun %{_name}%!" to console
@@ -43,7 +51,7 @@ on load:
     set {zombies::multilinelore::ultimate2rifle::*} to "&7God's personal enchanted enchanted rifle." and "&7Can be enchanted &a3 &7times. "
     set {zombies::multilinelore::ultimate3rifle::*} to "&7God's personal enchanted enchanted enchanted rifle." and "&7Can be enchanted &a3 &7times. "
     creategun("rifle", wooden axe, "&9&lRifle", "&7A basic rifle.", 6.0, 256, 32, 0.2, 1.5, "ash", 7, 10, "block.stone.break", 1)
-    creategun("ultimate1rifle", wooden axe, "&6&lUltimate 1 Rifle", {zombies::multilinelore::ultimate1rifle::*}, 8.0, 256, 35, 0.2, 1.4, "ash", 10, 12, "block.stone.break", 1, "rifle")
+    creategun("ultimaterifle", wooden axe, "&6&lUltimate Rifle", {zombies::multilinelore::ultimate1rifle::*}, 8.0, 256, 35, 0.2, 1.4, "ash", 10, 12, "block.stone.break", 1, "rifle")
     creategun("tier2rifle", iron axe, "&9&lTier 2 Rifle", "&7An upgraded rifle.", 9.0, 320, 32, 0.2, 1.3, "ash", 7, 10, "block.stone.break", 1)
     creategun("ultimatetier2rifle", iron axe, "&6&lUltimate Tier 2 Rifle", {zombies::multilinelore::ultimate2rifle::*}, 10.0, 320, 38, 0.2, 1.2, "ash", 10, 12, "block.stone.break", 1, "tier2rifle")
     creategun("tier3rifle", diamond axe, "&9&lTier 3 Rifle", "&7An upgraded upgraded rifle.", 10.0, 400, 34, 0.2, 1.1, "ash", 7, 10, "block.stone.break", 1)
@@ -54,6 +62,16 @@ on load:
     creategun("ultimate1rainbowrifle", golden axe, "&6&lUltimate 1 Rainbow Rifle", {zombies::multilinelore::ultimate1rifle::*}, 6.0, 288, 36, 0.3, 1.0, "dust_color_transition", 5, 7, "block.stone.break", 1, "rainbowrifle")
     creategun("ultimate2rainbowrifle", golden axe, "&6&lUltimate 2 Rainbow Rifle", {zombies::multilinelore::ultimate2rifle::*}, 6.5, 312, 39, 0.3, 1.0, "dust_color_transition", 5, 7, "block.stone.break", 1, "ultimate1rainbowrifle")
     creategun("ultimate3rainbowrifle", golden axe, "&6&lUltimate 3 Rainbow Rifle", {zombies::multilinelore::ultimate3rifle::*}, 7.0, 336, 42, 0.3, 1.0, "dust_color_transition", 5, 7, "block.stone.break", 1, "ultimate2rainbowrifle")
+
+    creategun("shotgun", wooden pickaxe, "&9&lShotgun", "&7A basic shotgun.", 4.5, 65, 5, 1.4, 1.5, "smoke", 8, 12, "entity.generic.explode", 2, "none", 10)
+    creategun("ultimateshotgun", wooden pickaxe, "&6&lUltimate Shotgun", "&8An enchanted shotgun.", 5.0, 65, 5, 1.4, 1.5, "smoke", 10, 14, "entity.generic.explode", 2, "shotgun", 10)
+    creategun("tier2shotgun", iron pickaxe, "&9&lTier 2 Shotgun", "&7An upgraded shotgun.", 5.0, 70, 7, 1.2, 1.4, "smoke", 8, 12, "entity.generic.explode", 2, "none", 10)
+    creategun("ultimatetier2shotgun", iron pickaxe, "&6&lUltimate Tier 2 Shotgun", "&7An enchanted upgraded shotgun :)", 5.5, 70, 8, 1.2, 1.4, "smoke", 10, 14, "entity.generic.explode", 2, "tier2shotgun", 10)
+    creategun("tier3shotgun", diamond pickaxe, "&9&lTier 3 Shotgun", "&7An upgraded upgraded shotgun.", 5.0, 75, 8, 1.0, 1.3, "smoke", 8, 12, "entity.generic.explode", 2, "none", 11)
+    creategun("ultimatetier3shotgun", diamond pickaxe, "&6&lUltimate Tier 3 Shotgun", "&7An enchanted upgraded upgraded shotgun :)", 5.5, 75, 9, 1.0, 1.3, "smoke", 10, 14, "entity.generic.explode", 2, "tier3shotgun", 11)
+    creategun("tier4shotgun", netherite pickaxe, "&9&lTier 4 Shotgun", "&7An upgraded upgraded upgraded shotgun.", 5.0, 80, 9, 0.8, 1.2, "smoke", 8, 12, "entity.generic.explode", 2, "none", 12)
+    creategun("ultimatetier4shotgun", netherite pickaxe, "&6&lUltimate Tier 4 Shotgun", "&7An enchanted upgraded upgraded upgraded shotgun :(", 6, 80, 10, 0.8, 1.2, "smoke", 10, 14, "entity.generic.explode", 2, "tier4shotgun", 12)
+
 
 command /getgun [<text>] [<number>]:
     trigger:
