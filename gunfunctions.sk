@@ -75,7 +75,8 @@ function shoot(gun: text, player: player, block: block, entity: entity):
                         loop 3 times:
                             draw 1 ({zombies::items::%{_gun}%::particle} parsed as a particle) at {_origlocation} ~ {_randomvector} with extra 0
                             set {_location} to {_location} ~ {_vector} 
-                        loop (distance between {_origlocation} and {_exactblock})+6 times:
+                        set {_location} to {_origlocation} ~ {_randomvector}
+                        loop (distance between {_origlocation} and {_exactblock})+2 times:
                             set {_location} to {_location} ~ {_vector}
                             draw 1 crit at {_location} with extra 0
                             loop all entities in radius 3 of {_location}:
