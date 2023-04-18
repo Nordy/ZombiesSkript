@@ -1,7 +1,6 @@
 function creategun(name: text, item: item, displayname: text, lore: texts, damage: number, ammo: number, clip: number, firerate: number, reload: number, particle: text, goldshot: number, goldcrit: number, sound: text, pitch: number, reference: text = "none", shotgun: number = 0, burst: number = 1, burstcooldown: number = 0):
     if {_reference} is "none":
         if {_shotgun} is bigger than 0:
-            broadcast "%{_name}%, %{_reference}%"
             set {zombies::items::%{_name}%::item} to {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a%{_damage}%*%{_shotgun}% HP", "&7✏ Ammo: &a%{_ammo}%", "&7✒ Clip ammo: &a%{_clip}%", "&7⌛ Fire rate: &a%{_firerate}%s", "&7↩  Reload: &a%{_reload}%s", "&7＄ Gold: &a%{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden 
         else:
             set {zombies::items::%{_name}%::item} to {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a%{_damage}% HP", "&7✏ Ammo: &a%{_ammo}%", "&7✒ Clip ammo: &a%{_clip}%", "&7⌛ Fire rate: &a%{_firerate}%s", "&7↩  Reload: &a%{_reload}%s", "&7＄ Gold: &a%{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden
@@ -41,7 +40,7 @@ on load:
     creategun("ultimatetier3pistol", diamond hoe, "&6&lUltimate Tier 3 Pistol", "&7An enchanted upgraded upgraded pistol. :|", 20.0, 700, 22, 0.3, 0.8, "crit", 15, 20, "entity.iron_golem.hurt", 2, "tier3pistol")
     creategun("tier4pistol", netherite hoe, "&9&lTier 4 Pistol", "&7An upgraded upgraded upgraded pistol.", 22.0, 900, 22, 0.2, 0.5, "crit", 10, 15, "entity.iron_golem.hurt", 2)
     creategun("ultimatetier4pistol", netherite hoe, "&6&lUltimate Tier 4 Pistol", "&7An enchanted upgraded upgraded upgraded pistol. :(", 25.0, 900, 25, 0.2, 0.5, "crit", 15, 20, "entity.iron_golem.hurt", 2, "tier4pistol")
-    creategun("powerpistol", golden hoe, "&6&lPower Pistol", {zombies::multilinelore::powerpistol::*}, 10.0, 350, 10, 0.4, 1.4, "instant_effect", 15, 20, "entity.iron_golem.hurt", 2)
+    creategun("powerpistol", golden hoe, "&9&lPower Pistol", {zombies::multilinelore::powerpistol::*}, 10.0, 350, 10, 0.4, 1.4, "instant_effect", 15, 20, "entity.iron_golem.hurt", 2)
     creategun("ultimate1powerpistol", golden hoe, "&6&lUltimate 1 Power Pistol", {zombies::multilinelore::ultimate1pistol::*}, 12.0, 350, 12, 0.3, 1.3, "instant_effect", 15, 20, "entity.iron_golem.hurt", 2, "powerpistol")
     creategun("ultimate2powerpistol", golden hoe, "&6&lUltimate 2 Power Pistol", {zombies::multilinelore::ultimate1pistol::*}, 15.0, 400, 14, 0.3, 1.2, "instant_effect", 15, 20, "entity.iron_golem.hurt", 2, "ultimate1powerpistol")
     creategun("ultimate3powerpistol", golden hoe, "&6&lUltimate 3 Power Pistol", {zombies::multilinelore::ultimate1pistol::*}, 18.0, 400, 16, 0.2, 1.1, "instant_effect", 15, 20, "entity.iron_golem.hurt", 2, "ultimate2powerpistol")
@@ -58,11 +57,15 @@ on load:
     creategun("ultimatetier3rifle", diamond axe, "&6&lUltimate Tier 3 Rifle", {zombies::multilinelore::ultimate3rifle::*}, 12.0, 400, 40, 0.2, 1.0, "ash", 10, 12, "block.stone.break", 1, "tier3rifle")
     creategun("tier4rifle", netherite axe, "&9&lTier 4 Rifle", "&7An upgraded upgraded upgraded rifle.", 12.0, 450, 37, 0.2, 0.9, "ash", 7, 10, "block.stone.break", 1)
     creategun("ultimatetier4rifle", netherite axe, "&6&lUltimate Tier 4 Rifle", {zombies::multilinelore::ultimate3rifle::*}, 14.0, 450, 40, 0.2, 0.9, "ash", 10, 12, "block.stone.break", 1, "tier4rifle")
-    creategun("rainbowrifle", golden axe, "&6&lRainbow Rifle", {zombies::multilinelore::rainbowrifle::*}, 5.0, 240, 30, 0.4, 1.5, "dust_color_transition", 5, 7, "block.stone.break", 1)
+    creategun("rainbowrifle", golden axe, "&9&lRainbow Rifle", {zombies::multilinelore::rainbowrifle::*}, 5.0, 240, 30, 0.4, 1.5, "dust_color_transition", 5, 7, "block.stone.break", 1)
     creategun("ultimate1rainbowrifle", golden axe, "&6&lUltimate 1 Rainbow Rifle", {zombies::multilinelore::ultimate1rifle::*}, 6.0, 288, 36, 0.3, 1.0, "dust_color_transition", 5, 7, "block.stone.break", 1, "rainbowrifle")
     creategun("ultimate2rainbowrifle", golden axe, "&6&lUltimate 2 Rainbow Rifle", {zombies::multilinelore::ultimate2rifle::*}, 6.5, 312, 39, 0.3, 1.0, "dust_color_transition", 5, 7, "block.stone.break", 1, "ultimate1rainbowrifle")
     creategun("ultimate3rainbowrifle", golden axe, "&6&lUltimate 3 Rainbow Rifle", {zombies::multilinelore::ultimate3rifle::*}, 7.0, 336, 42, 0.3, 1.0, "dust_color_transition", 5, 7, "block.stone.break", 1, "ultimate2rainbowrifle")
 
+    set {zombies::multilinelore::zombiezapper::*} to "&7A basic zombie killer." and "&7Can be enchanted &a3 &7times. "
+    set {zombies::multilinelore::ultimate1zombiezapper::*} to "&7An enchanted zombie killer." and "&7Can be enchanted &a3 &7times. "
+    set {zombies::multilinelore::ultimate2zombiezapper::*} to "&7An enchanted enchanted zombie killer." and "&7Can be enchanted &a3 &7times. "
+    set {zombies::multilinelore::ultimate3zombiezapper::*} to "&7An enchanted enchanted enchanted zombie killer." and "&7Can be enchanted &a3 &7times. "
     creategun("shotgun", wooden pickaxe, "&9&lShotgun", "&7A basic shotgun.", 4.5, 65, 5, 1.4, 1.5, "smoke", 8, 12, "entity.generic.explode", 2, "none", 10)
     creategun("ultimateshotgun", wooden pickaxe, "&6&lUltimate Shotgun", "&8An enchanted shotgun.", 5.0, 65, 5, 1.4, 1.5, "smoke", 10, 14, "entity.generic.explode", 2, "shotgun", 10)
     creategun("tier2shotgun", iron pickaxe, "&9&lTier 2 Shotgun", "&7An upgraded shotgun.", 5.0, 70, 7, 1.2, 1.4, "smoke", 8, 12, "entity.generic.explode", 2, "none", 10)
@@ -71,8 +74,10 @@ on load:
     creategun("ultimatetier3shotgun", diamond pickaxe, "&6&lUltimate Tier 3 Shotgun", "&7An enchanted upgraded upgraded shotgun :)", 5.5, 75, 9, 1.0, 1.3, "smoke", 10, 14, "entity.generic.explode", 2, "tier3shotgun", 11)
     creategun("tier4shotgun", netherite pickaxe, "&9&lTier 4 Shotgun", "&7An upgraded upgraded upgraded shotgun.", 5.0, 80, 9, 0.8, 1.2, "smoke", 8, 12, "entity.generic.explode", 2, "none", 12)
     creategun("ultimatetier4shotgun", netherite pickaxe, "&6&lUltimate Tier 4 Shotgun", "&7An enchanted upgraded upgraded upgraded shotgun :(", 6, 80, 10, 0.8, 1.2, "smoke", 10, 14, "entity.generic.explode", 2, "tier4shotgun", 12)
-
-
+    creategun("zombiezapper", golden pickaxe, "&9&lZombie Zapper", {zombies::multilinelore::zombiezapper::*}, 12.0, 100, 10, 0.5, 2.0, "enchanted_hit", 15, 20, "block.big_dripleaf.break", 2)
+    creategun("ultimate1zombiezapper", golden pickaxe, "&6&lUltimate 1 Zombie Zapper", {zombies::multilinelore::ultimate1zombiezapper::*}, 14.0, 120, 10, 0.4, 1.7, "enchanted_hit", 15, 20, "block.big_dripleaf.break", 2, "zombiezapper")
+    creategun("ultimate2zombiezapper", golden pickaxe, "&6&lUltimate 2 Zombie Zapper", {zombies::multilinelore::ultimate2zombiezapper::*}, 16.0, 140, 12, 0.4, 1.5, "enchanted_hit", 15, 20, "block.big_dripleaf.break", 2, "ultimate1zombiezapper")
+    creategun("ultimate3zombiezapper", golden pickaxe, "&6&lUltimate 3 Zombie Zapper", {zombies::multilinelore::ultimate3zombiezapper::*}, 18.0, 160, 12, 0.3, 1.2, "enchanted_hit", 15, 20, "block.big_dripleaf.break", 2, "ultimate2zombiezapper")
 command /getgun [<text>] [<number>]:
     trigger:
         if "%{zombies::itemlist::*}%" contains arg-1:

@@ -58,7 +58,7 @@ function shoot(gun: text, player: player, block: block, entity: entity):
     if {zombies::gun::%{_gun}%::ammo::%{_player}%} is bigger than 0:
         if {zombies::gun::%{_gun}%::reload::%{_player}%} is not true:
             if {zombies::gun::%{_gun}%::firerate::%{_player}%} is not true:
-                if {zombies::items::%{_gun}%::shotgun} is bigger than 0:
+                if {_gun} contains "shotgun":
                     set {zombies::gun::%{_gun}%::firerate::%{_player}%} to true
                     send action bar "" to {_player}
                     set {_location} to location of {_player}'s head
@@ -69,34 +69,38 @@ function shoot(gun: text, player: player, block: block, entity: entity):
                     set {_money} to 0
                     set {_crits} to 0
                     set {_normals} to 0
+                    play sound {zombies::items::%{_gun}%::sound} at volume 1 with pitch {zombies::items::%{_gun}%::pitch} at {_player}
                     loop {zombies::items::%{_gun}%::shotgun} times:
-                        set {_randomvector} to vector(random number between -0.5 and 0.5, random number between -0.5 and 0.5, random number between -0.3 and 0.3)
+                        set {_randomvector} to vector(random number between -0.3 and 0.3, random number between -0.3 and 0.3, random number between -0.3 and 0.3)
                         set {_location} to {_location} ~ {_randomvector}
                         loop 3 times:
                             draw 1 ({zombies::items::%{_gun}%::particle} parsed as a particle) at {_origlocation} ~ {_randomvector} with extra 0
                             set {_location} to {_location} ~ {_vector} 
                         set {_location} to {_origlocation} ~ {_randomvector}
-                        loop (distance between {_origlocation} and {_exactblock})+2 times:
+                        set {_stop} to false
+                        loop 4 times:
                             set {_location} to {_location} ~ {_vector}
-                            draw 1 crit at {_location} with extra 0
-                            loop all entities in radius 3 of {_location}:
+                            loop all entities in radius 2 of {_location}:
+                                set {_stop} to true
                                 if loop-entity is a monster:
                                     damage loop-entity by {zombies::items::%{_gun}%::damage}
-                                    if distance between loop-entity's head and {_location} < 0.7:
+                                    if distance between loop-entity's head and {_location} < 0.85:
                                         set {_money} to {_money} + {zombies::items::%{_gun}%::goldcrit}
                                         set {_crits} to {_crits} + 1
                                         play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 1.5 at {_player}
-                                        exit 2 loops
                                     else:
-                                        broadcast distance between loop-entity's head and {_location}
                                         set {_normals} to {_normals} + 1
                                         set {_money} to {_money} + {zombies::items::%{_gun}%::goldshot}
                                         play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 2 at {_player}
+                            if {_stop} is true:
+                                exit loop
+                     
 
-                    if {_crits} is bigger than 0:
-                        send action bar "&6%{_crits}% Criticals (+%{_money}% Gold)" to {_player}
-                    else:
-                        send action bar "&7%{_normals}% Regulars (+%{_money}% Gold)" to {_player}
+                    if {_money} is bigger than 0:
+                        if {_crits} is bigger than 0:
+                            send action bar "&6%{_crits}% Criticals (+%{_money}% Gold)" to {_player}
+                        else:
+                            send action bar "&7%{_normals}% Regulars (+%{_money}% Gold)" to {_player}
 
                     if number of {zombies::items::%{_gun}%::item} in {_player}'s inventory is bigger than 1:
                         remove 1 of {zombies::items::%{_gun}%::item} from {_player}'s inventory
@@ -143,6 +147,18 @@ function shoot(gun: text, player: player, block: block, entity: entity):
                                         set {_location} to {_location} ~ {_vector}
                                         if distance between {_targetlocationhead} and {_location} < 0.7:
                                             set {_crit} to true
+                                    if {_gun} contains "zapper":
+                                        loop all entities in radius 3 of {_targetlocation}:
+                                            if loop-entity is a monster:
+                                                if loop-entity is not {_entity}:
+                                                    damage loop-entity by {zombies::items::%{_gun}%::damage}/2
+                                                    set {_chance} to a random integer between 1 and 100
+                                                    if {_chance} is between 1 and 30:
+                                                        send action bar "&6Critical hit (+%{zombies::items::%{_gun}%::goldcrit}% Gold)" to {_player}
+                                                        play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 1.5 at {_player}
+                                                    else:
+                                                        send action bar "&7Regular hit (+%{zombies::items::%{_gun}%::goldshot}% Gold)" to {_player}
+                                                        play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 2 at {_player} 
                                     damage {_entity} by {zombies::items::%{_gun}%::damage}/2
                                     if {_crit} is true:
                                         send action bar "&6Critical hit (+%{zombies::items::%{_gun}%::goldcrit}% Gold)" to {_player}
@@ -195,7 +211,7 @@ function shoot(gun: text, player: player, block: block, entity: entity):
                         wait "%{zombies::items::%{_gun}%::burstcooldown}% seconds" parsed as a timespan
                 set {zombies::gun::%{_gun}%::firecooldown::%{_player}%} to 0
 
-                loop 9 times:
+                loop 20 times:
                     if {zombies::items::%{_gun}%::firerate} / loop-value >= 0.05:
                         set {_num} to loop-value
 
@@ -281,7 +297,12 @@ on left click:
                 reload(loop-value, player)
                 exit loop
 
-
+# on damage:
+#     if event-entity is a player:
+#         if event-entity's tool is not air:
+#             if name of event-entity's tool is in {zombies::gunlist::*}:
+#                 cancel event
+#                 shoot(name of event-entity's tool, event-entity, exact target block, target entity)
 
 on right click:
     loop {zombies::itemlist::*}:
