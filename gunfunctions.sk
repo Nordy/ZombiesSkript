@@ -1,7 +1,6 @@
 on join:
     clear {zombies::glowlist::%player%}
 
-
 function makeglowing(p: player, t: entity):
     if {_t} is a monster:
         set {zombies::glowlist::%{_p}%} to {_t}  
@@ -48,11 +47,15 @@ function reload(gun: text, player: player):
                         set {_counter} to 0.0
                         if name of {_player}'s held item is name of {zombies::items::%{_gun}%::item}:
                             set level progress of {_player} to 0
-                        loop 10 times:
-                            set {_nbt} to nbt compound from "{Damage:%(max durability of slot {_loopvalue} of {_player}'s inventory) - ((max durability of slot {_loopvalue} of {_player}'s inventory) * ({_counter}))%}"
+                        loop 30 times:
+                            if {zombies::items::%{_gun}%::reload} / loop-value-2 >= 0.05:
+                                set {_amount} to loop-value-2
+
+                        loop {_amount} times:
+                            set {_nbt} to nbt compound from "{Damage:%(max durability of slot {_loopvalue} of {_player}'s inventory) - ({_counter})%}"
                             set slot {_loopvalue} of {_player} to {zombies::items::%{_gun}%::item} with nbt {_nbt}
-                            add 0.1 to {_counter}
-                            wait "%({zombies::items::%{_gun}%::reload} / 10)% seconds" parsed as a timespan
+                            add (max durability of slot {_loopvalue} of {_player}'s inventory) / {_amount} to {_counter}
+                            wait "%({zombies::items::%{_gun}%::reload} / {_amount})% seconds" parsed as a timespan
                         set {_nbt} to nbt compound from "{Damage:0}"
                         if mod({zombies::gun::%{_gun}%::ammo::%{_player}%}, {zombies::items::%{_gun}%::clip}) is 0:
                             set slot {_loopvalue} of {_player} to {zombies::items::%{_gun}%::clip} of {zombies::items::%{_gun}%::item} with nbt {_nbt}
@@ -268,7 +271,9 @@ on held item change:
     loop {zombies::itemlist::*}:
         if name of player's held item is name of {zombies::items::%loop-value%::item}:
             if name of player's held item contains "sniper":
-                apply potion of slowness 4 without particles to player for 9999 seconds
+                apply potion of slowness 4 without particles to player for 999 days
+            else:
+                remove slowness from player
             set level of player to {zombies::gun::%loop-value%::ammo::%player%}
             if {zombies::gun::%loop-value%::ammo::%player%} is bigger than 0:
                 if {zombies::gun::%loop-value%::reload::%player%} is not true:
@@ -320,28 +325,23 @@ every second:
                 set level progress of loop-player to 0
                 set level of loop-player to 0 
                 send action bar "" to loop-player
-        if name of loop-player's held item contains "sniper":
-            if target entity of loop-player is set:
-                makeglowing(loop-player, target entity of loop-player)
-            else:
-                clear {zombies::glowlist::%loop-player%}
-                cancelglowing(loop-player, target entity of loop-player)
-        else:
-            clear {zombies::glowlist::%loop-player%}
-            if target entity of loop-player is set:
-                cancelglowing(loop-player, target entity of loop-player)
         notglowing(loop-player)
+
 on any move:
     if name of player's held item contains "sniper":
         if target entity of player is set:
-            makeglowing(player, target entity of player)
+            if target entity of player is {zombies::glowlist::%player%}:
+                makeglowing(player, target entity of player)
+            else:
+                cancelglowing(player, {zombies::glowlist::%player%})
+                set {zombies::glowlist::%player%} to target entity of player
+                makeglowing(player, {zombies::glowlist::%player%})
         else:
+            cancelglowing(player, {zombies::glowlist::%player%})
             clear {zombies::glowlist::%player%}
-            cancelglowing(player, target entity of player)
     else:
+        cancelglowing(player, {zombies::glowlist::%player%})
         clear {zombies::glowlist::%player%}
-        if target entity of player is set:
-            cancelglowing(player, target entity of player)
         
             
     

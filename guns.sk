@@ -96,6 +96,15 @@ on load:
     creategun("ultimate2sigmasniper", golden shovel, "&6&lUltimate 2 Sigma Sniper", {zombies::multilinelore::ultimate2sigmasniper::*}, 30, 90, 7, 0.6, 1.6, "cloud", 40, 50, "entity.generic.big_fall", 1, "ultimate1sigmasniper")
     creategun("ultimate3sigmasniper", golden shovel, "&6&lUltimate 3 Sigma Sniper", {zombies::multilinelore::ultimate3sigmasniper::*}, 35, 95, 9, 0.5, 1.5, "cloud", 40, 50, "entity.generic.big_fall", 1, "ultimate2sigmasniper")
 
+    set {zombies::multilinelore::doublebarrelshotgun::*} to "&7God's personl shotgun." and "&7Can be enchanted &a3 &7times. "
+    set {zombies::multilinelore::ultimate1doublebarrelshotgun::*} to "&7God's personl enchanted shotgun." and "&7Can be enchanted &a3 &7times. "
+    set {zombies::multilinelore::ultimate2doublebarrelshotgun::*} to "&7God's personl enchanted enchanted shotgun. (Insert holy sound)" and "&7Can be enchanted &a3 &7times. "
+    set {zombies::specialitemthatdoesntrender} to a flint and steel
+    creategun("doublebarrelshotgun", {zombies::specialitemthatdoesntrender} , "&9&lDouble Barrel Shotgun", {zombies::multilinelore::doublebarrelshotgun::*}, 7, 20, 2, 0.3, 3.0, "lava", 8, 12, "entity.generic.explode", 1, "none", 9)
+    creategun("ultimate1doublebarrelshotgun", {zombies::specialitemthatdoesntrender}, "&6&lUltimate 1 Double Barrel Shotgun", {zombies::multilinelore::ultimate1doublebarrelshotgun::*}, 7, 30, 2, 0.3, 2.5, "lava", 8, 12, "entity.generic.explode", 1, "doublebarrelshotgun", 9)
+    creategun("ultimate2doublebarrelshotgun", {zombies::specialitemthatdoesntrender}, "&6&lUltimate 2 Double Barrel Shotgun", {zombies::multilinelore::ultimate2doublebarrelshotgun::*}, 8, 36, 3, 0.3, 2.5, "lava", 8, 12, "entity.generic.explode", 1, "ultimate1doublebarrelshotgun", 9)
+    creategun("ultimate3doublebarrelshotgun", {zombies::specialitemthatdoesntrender}, "&6&lUltimate 3 Double Barrel Shotgun", {zombies::multilinelore::ultimate3doublebarrelshotgun::*}, 8, 42, 3, 0.3, 2.3, "lava", 8, 12, "entity.generic.explode", 1, "ultimate2doublebarrelshotgun", 9)
+
 command /getgun [<text>] [<number>]:
     trigger:
         if "%{zombies::itemlist::*}%" contains arg-1:
