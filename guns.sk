@@ -25,7 +25,7 @@ function creategun(name: text, item: item, displayname: text, lore: texts, damag
     set {zombies::items::%{_name}%::burstcooldown} to {_burstcooldown}
     send "&a(!) Registered custom gun %{_name}%!" to console
     add {_name} to {zombies::itemlist::*}
-
+#rocket lanucher sound entity.generic.burn pitch 0
 on load:
     clear {zombies::itemlist::*}  
     set {zombies::multilinelore::powerpistol::*} to "&7God's personal pistol." and "&7Can be enchanted &a3 &7times. "
@@ -78,6 +78,24 @@ on load:
     creategun("ultimate1zombiezapper", golden pickaxe, "&6&lUltimate 1 Zombie Zapper", {zombies::multilinelore::ultimate1zombiezapper::*}, 14.0, 120, 10, 0.4, 1.7, "enchanted_hit", 15, 20, "block.big_dripleaf.break", 2, "zombiezapper")
     creategun("ultimate2zombiezapper", golden pickaxe, "&6&lUltimate 2 Zombie Zapper", {zombies::multilinelore::ultimate2zombiezapper::*}, 16.0, 140, 12, 0.4, 1.5, "enchanted_hit", 15, 20, "block.big_dripleaf.break", 2, "ultimate1zombiezapper")
     creategun("ultimate3zombiezapper", golden pickaxe, "&6&lUltimate 3 Zombie Zapper", {zombies::multilinelore::ultimate3zombiezapper::*}, 18.0, 160, 12, 0.3, 1.2, "enchanted_hit", 15, 20, "block.big_dripleaf.break", 2, "ultimate2zombiezapper")
+
+    set {zombies::multilinelore::sigmasniper::*} to "&7God's most fucked up weapon." and "&7Can be enchanted &a3 &7times. "
+    set {zombies::multilinelore::ultimate1sigmasniper::*} to "&7God's most fucked up enchanted weapon." and "&7Can be enchanted &a3 &7times. "
+    set {zombies::multilinelore::ultimate2sigmasniper::*} to "&7God's most fucked up enchanted enchanted weapon." and "&7Can be enchanted &a3 &7times. "
+    set {zombies::multilinelore::ultimate3sigmasniper::*} to "&7God's most fucked up enchanted enchanted enchanted weapon." and "&7Can be enchanted &a3 &7times. "
+    creategun("sniper", wooden shovel, "&9&lSniper", "&7This took way too long to code.", 20, 40, 4, 1.5, 2.0, "cloud", 30, 45, "entity.generic.big_fall", 1)
+    creategun("ultimatesniper", wooden shovel, "&6&lUltimate Sniper", "&8An enchanted annoying gun.", 25, 40, 5, 1.5, 2.0, "cloud", 35, 50, "entity.generic.big_fall", 1, "sniper")
+    creategun("tier2sniper", iron shovel, "&9&lTier 2 Sniper", "&7An upgraded annoying gun.", 20, 50, 5, 1.3, 1.9, "cloud", 30, 45, "entity.generic.big_fall", 1)
+    creategun("ultimatetier2sniper", iron shovel, "&6&lUltimate Tier 2 Sniper", "&7An enchanted upgraded annoying gun", 25, 50, 7, 1.3, 1.9, "cloud", 35, 50, "entity.generic.big_fall", 1, "tier2sniper")
+    creategun("tier3sniper", diamond shovel, "&9&lTier 3 Sniper", "&7An upgraded upgraded annoying gun.", 25, 55, 5, 1.3, 1.8, "cloud", 30, 45, "entity.generic.big_fall", 1)
+    creategun("ultimatetier3sniper", diamond shovel, "&6&lUltimate Tier 3 Sniper", "&7An enchanted upgraded upgraded annoying gun", 30, 55, 7, 1.3, 1.8, "cloud", 35, 50, "entity.generic.big_fall", 1, "tier3sniper")
+    creategun("tier4sniper", netherite shovel, "&9&lTier 4 Sniper", "&7An upgraded upgraded upgraded annoying gun.", 30, 60, 6, 1.1, 1.6, "cloud", 30, 45, "entity.generic.big_fall", 1)
+    creategun("ultimatetier4sniper", netherite shovel, "&6&lUltimate Tier 4 Sniper", "&7An enchanted upgraded upgraded upgraded annoying gun", 35, 60, 10, 1.1, 1.6, "cloud", 35, 50, "entity.generic.big_fall", 1, "tier4sniper")
+    creategun("sigmasniper", golden shovel, "&9&lSigma Sniper", {zombies::multilinelore::sigmasniper::*}, 20, 80, 5, 1.0, 2.0, "cloud", 40, 50, "entity.generic.big_fall", 1)
+    creategun("ultimate1sigmasniper", golden shovel, "&6&lUltimate 1 Sigma Sniper", {zombies::multilinelore::ultimate1sigmasniper::*}, 25, 85, 5, 0.7, 1.7, "cloud", 40, 50, "entity.generic.big_fall", 1, "sigmasniper")
+    creategun("ultimate2sigmasniper", golden shovel, "&6&lUltimate 2 Sigma Sniper", {zombies::multilinelore::ultimate2sigmasniper::*}, 30, 90, 7, 0.6, 1.6, "cloud", 40, 50, "entity.generic.big_fall", 1, "ultimate1sigmasniper")
+    creategun("ultimate3sigmasniper", golden shovel, "&6&lUltimate 3 Sigma Sniper", {zombies::multilinelore::ultimate3sigmasniper::*}, 35, 95, 9, 0.5, 1.5, "cloud", 40, 50, "entity.generic.big_fall", 1, "ultimate2sigmasniper")
+
 command /getgun [<text>] [<number>]:
     trigger:
         if "%{zombies::itemlist::*}%" contains arg-1:

@@ -1,4 +1,39 @@
-# todo: fix shotgun
+on join:
+    clear {zombies::glowlist::%player%}
+
+
+function makeglowing(p: player, t: entity):
+    if {_t} is a monster:
+        set {zombies::glowlist::%{_p}%} to {_t}  
+        make {_t} glow light red for {_p}
+
+function cancelglowing(p: player, t: entity):
+    if {_t} is a monster:
+        clear {zombies::glowlist::%{_p}%}
+        {_t}.setGlowing(true)
+        {_t}.setGlowing(false)
+        make {_t} not glow for {_p}
+        loop all players:
+            if loop-player is not {_p}:
+                if {zombies::glowlist::%loop-player%} is {_t}:
+                    loop-entity-1.setGlowing(true)
+                    loop-entity-1.setGlowing(false)
+                    wait 1 tick
+                    make {_t} glow light red for loop-player
+
+function notglowing(p: player):
+    loop all entities in radius 400 of {_p}:
+        if loop-entity is a monster:
+            loop-entity.setGlowing(true)
+            loop-entity.setGlowing(false)
+            loop all players:
+                wait 1 tick
+                if {zombies::glowlist::%{_p}%} is loop-entity-1:
+                    make loop-entity-1 glow light red for loop-player
+                else:
+                    loop-entity-1.setGlowing(true)
+                    loop-entity-1.setGlowing(false)
+                    make loop-entity-1 not glow for loop-player
 
 function reload(gun: text, player: player):
     if {zombies::gun::%{_gun}%::reload::%{_player}%} is not true:
@@ -45,14 +80,7 @@ function reload(gun: text, player: player):
                         set {_nbt} to nbt compound from "{Damage:%(max durability of slot {_loopvalue} of {_player}'s inventory)%}"
                         set slot {_loopvalue} of {_player} to {zombies::items::%{_gun}%::item} with nbt {_nbt}
                     exit loop
-on right click with cake:
-    set {_l} to location of player's head
-    set {_v} to vector from yaw player's yaw and pitch player's pitch
-    loop 40 times:
-        set standard length of {_v} to 1
-        set {_pewpew} to {_l} ~ {_v}
-        set {test} to vector(random number between 0 and 1, random number between -0.5 and 0, random number between 0 and 1)
-        draw 1 smoke at {_l} ~ {_v} ~ {test} with extra 0 
+
 
 function shoot(gun: text, player: player, block: block, entity: entity):
     if {zombies::gun::%{_gun}%::ammo::%{_player}%} is bigger than 0:
@@ -239,6 +267,8 @@ function shoot(gun: text, player: player, block: block, entity: entity):
 on held item change:
     loop {zombies::itemlist::*}:
         if name of player's held item is name of {zombies::items::%loop-value%::item}:
+            if name of player's held item contains "sniper":
+                apply potion of slowness 4 without particles to player for 9999 seconds
             set level of player to {zombies::gun::%loop-value%::ammo::%player%}
             if {zombies::gun::%loop-value%::ammo::%player%} is bigger than 0:
                 if {zombies::gun::%loop-value%::reload::%player%} is not true:
@@ -260,6 +290,9 @@ on held item change:
             set level progress of player to 0
             set level of player to 0 
             send action bar "" to player
+            remove slowness from player
+
+
 
 every second:
     loop all players:
@@ -287,6 +320,30 @@ every second:
                 set level progress of loop-player to 0
                 set level of loop-player to 0 
                 send action bar "" to loop-player
+        if name of loop-player's held item contains "sniper":
+            if target entity of loop-player is set:
+                makeglowing(loop-player, target entity of loop-player)
+            else:
+                clear {zombies::glowlist::%loop-player%}
+                cancelglowing(loop-player, target entity of loop-player)
+        else:
+            clear {zombies::glowlist::%loop-player%}
+            if target entity of loop-player is set:
+                cancelglowing(loop-player, target entity of loop-player)
+        notglowing(loop-player)
+on any move:
+    if name of player's held item contains "sniper":
+        if target entity of player is set:
+            makeglowing(player, target entity of player)
+        else:
+            clear {zombies::glowlist::%player%}
+            cancelglowing(player, target entity of player)
+    else:
+        clear {zombies::glowlist::%player%}
+        if target entity of player is set:
+            cancelglowing(player, target entity of player)
+        
+            
     
 
 on left click:
