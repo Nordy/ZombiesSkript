@@ -105,6 +105,9 @@ on load:
     creategun("ultimate2doublebarrelshotgun", {zombies::specialitemthatdoesntrender}, "&6&lUltimate 2 Double Barrel Shotgun", {zombies::multilinelore::ultimate2doublebarrelshotgun::*}, 8, 36, 3, 0.3, 2.5, "lava", 8, 12, "entity.generic.explode", 1, "ultimate1doublebarrelshotgun", 9)
     creategun("ultimate3doublebarrelshotgun", {zombies::specialitemthatdoesntrender}, "&6&lUltimate 3 Double Barrel Shotgun", {zombies::multilinelore::ultimate3doublebarrelshotgun::*}, 8, 42, 3, 0.3, 2.3, "lava", 8, 12, "entity.generic.explode", 1, "ultimate2doublebarrelshotgun", 9)
 
+
+    creategun("rocketlauncher", shears, "&9&lRocket Launcher", "A gun that launches rockets, this is lit.", 15, 20, 4, 2.0, 3.0, "firework", 20, 30, "entity.goat.eat", 0)
+    creategun("ultimaterocketlauncher", shears, "&6&lUltimate Rocket Launcher", "An enchanted gun that launches rockets, this is lit.", 20, 32, 4, 1.5, 2.0, "firework", 20, 30, "entity.goat.eat", 0, "rocketlauncher")
 command /getgun [<text>] [<number>]:
     trigger:
         if "%{zombies::itemlist::*}%" contains arg-1:
