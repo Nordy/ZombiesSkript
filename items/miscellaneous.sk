@@ -1,0 +1,26 @@
+
+function createknife(name: text, item: item, displayname: text, lore: texts, damage: number, gold: number):
+    set {zombies::items::misc::%{_name}%::item} to {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a%{_damage}% HP", "&7＄ Gold: &a%{_gold}%", " " and "&bLEFT CLICK &7to use." with attributes hidden
+    set {zombies::items::misc::%{_name}%::damage} to {_damage}
+    set {zombies::items::misc::%{_name}%::gold} to {_gold}
+    send "&a(!) Registered custom miscellaneous %{_name}%!" to console
+    add {_name} to {zombies::lists::misc::*}
+
+on load:
+    clear {zombies::lists::misc::*}  
+    createknife("knife", stone sword, "&9&lKnife", "&7Please don't use this.", 4, 4)
+    createknife("sharpknife", iron sword, "&9&lSharp Knife", "&7Please don't use this too.", 7, 6)
+    createknife("superknife", diamond sword, "&9&lUltimate Sharp Knife", "&7You mgiht use this.", 10, 8)
+
+command /getmisc [<text>]:
+    trigger:
+        if "%{zombies::lists::misc::*}%" contains arg-1:
+            set slot 0 of player to 1 of {zombies::items::misc::%arg-1%::item}
+            send "&a(!) You have been given a %arg-1%!"
+        else:
+            send "&c(!) Misc not found!"
+            send "&c(!) Available Items: %{zombies::lists::misc::*}%"
+
+on skbee tab complete for "/getmisc":
+    loop {zombies::lists::misc::*}:
+        add loop-value to tab completions

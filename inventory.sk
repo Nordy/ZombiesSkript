@@ -1,0 +1,63 @@
+on load:
+    set {zombies::items::inventory::emptygun} to 1 of lime dye named "&c&oGun Slot" with lore "&8Fill this up by buying more guns!"
+    set {zombies::items::inventory::emptyability} to 1 of gray dye named "&c&oAbility Slot" with lore "&8Fill this up by buying more abilities!"
+    set {zombies::items::inventory::emptyperk} to 1 of light blue dye named "&c&oPerk Slot" with lore "&8Fill this up by buying more perks!"
+
+
+function obtainGun(p: player, g: text, s: number = -1):
+    if "%{zombies::lists::guns::*}%" contains {_g}:
+        if {_s} is -1:
+            loop 4 times:
+                if name of slot loop-value of {_p}'s inventory contains name of {zombies::items::guns::%{_g}%::item}:
+                    set {_s} to loop-value
+                    exit loop
+            if {_s} is -1:
+                loop 4 times:
+                    if slot loop-value of {_p}'s inventory is {zombies::items::inventory::emptygun}:
+                        set {_s} to loop-value
+                        exit loop
+        set slot {_s} of {_p} to {zombies::items::guns::%{_g}%::clip} of {zombies::items::guns::%{_g}%::item}
+        set {zombies::playerstats::gun::%{_g}%::ammo::%{_p}%} to {zombies::items::guns::%{_g}%::ammo}
+        set {zombies::playerstats::gun::%{_g}%::reload::%{_p}%} to false
+        set {zombies::playerstats::gun::%{_g}%::firerate::%{_p}%} to false
+
+function defaultInventory(p: player):
+    loop 36 times:
+        set {_slot} to (loop-value)-1
+        set slot {_slot} of {_p}'s inventory to red stained glass pane named "&c "
+    set {_p}'s helmet to air 
+    set {_p}'s chestplate to air
+    set {_p}'s leggings to air
+    set {_p}'s boots to air
+    set {_p}'s offhand to air
+
+    set slot 0 of {_p}'s inventory to {zombies::items::misc::knife::item}
+    set slot 1 of {_p}'s inventory to {zombies::items::inventory::emptygun}
+    set slot 2 of {_p}'s inventory to {zombies::items::inventory::emptygun}
+    set slot 3 of {_p}'s inventory to {zombies::items::inventory::emptygun}
+    set slot 4 of {_p}'s inventory to {zombies::items::inventory::emptygun}
+    set slot 5 of {_p}'s inventory to {zombies::items::inventory::emptyability}
+    set slot 6 of {_p}'s inventory to {zombies::items::inventory::emptyperk}
+    set slot 7 of {_p}'s inventory to {zombies::items::inventory::emptyperk}
+    set slot 8 of {_p}'s inventory to {zombies::items::inventory::emptyperk}
+
+    obtainGun({_p}, "pistol")
+
+
+
+
+on right click:
+    send "%clicked entity%"
+
+on inventory click:
+    if player's gamemode is survival:
+        cancel event
+
+on drop:
+    if player's gamemode is survival:
+        cancel event
+
+command /defaultinv:
+    trigger:
+        defaultInventory(player)
+        send "ok"

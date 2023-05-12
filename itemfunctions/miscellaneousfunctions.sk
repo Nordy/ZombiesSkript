@@ -1,0 +1,22 @@
+on join:
+    apply infinite potion effect of mining fatigue of tier 5 without particles to player
+
+on damage:
+    if attacker is a player:
+        cancel event
+        if victim is a monster:
+            loop {zombies::lists::misc::*}:
+                if name of attacker's held item is name of {zombies::items::misc::%loop-value%::item}:
+                    if attack cooldown of attacker is bigger than 0.8:
+                        damage victim by {zombies::items::misc::%loop-value%::damage}
+                        play sound "item.axe.scrape" at volume 1 with pitch 0 to attacker
+                        send "&6+%{zombies::items::misc::%loop-value%::gold}% Gold" to attacker
+                    else:
+                        damage victim by 0.2
+                        play sound "entity.player.attack.sweep" at volume 1 with pitch 0 to attacker
+        else:
+            play sound "entity.player.attack.sweep" at volume 1 with pitch 0.4 to attacker
+on left click:
+    loop {zombies::lists::misc::*}:
+        if name of player's held item is name of {zombies::items::misc::%loop-value%::item}:   
+            play sound "entity.player.attack.sweep" at volume 1 with pitch 0.4 to player

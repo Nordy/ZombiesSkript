@@ -1,33 +1,33 @@
 function creategun(name: text, item: item, displayname: text, lore: texts, damage: number, ammo: number, clip: number, firerate: number, reload: number, particle: text, goldshot: number, goldcrit: number, sound: text, pitch: number, reference: text = "none", shotgun: number = 0, burst: number = 1, burstcooldown: number = 0):
     if {_reference} is "none":
         if {_shotgun} is bigger than 0:
-            set {zombies::items::%{_name}%::item} to {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a%{_damage}%*%{_shotgun}% HP", "&7✏ Ammo: &a%{_ammo}%", "&7✒ Clip ammo: &a%{_clip}%", "&7⌛ Fire rate: &a%{_firerate}%s", "&7↩  Reload: &a%{_reload}%s", "&7＄ Gold: &a%{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden 
+            set {zombies::items::guns::%{_name}%::item} to {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a%{_damage}%*%{_shotgun}% HP", "&7✏ Ammo: &a%{_ammo}%", "&7✒ Clip ammo: &a%{_clip}%", "&7⌛ Fire rate: &a%{_firerate}%s", "&7↩  Reload: &a%{_reload}%s", "&7＄ Gold: &a%{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden 
         else:
-            set {zombies::items::%{_name}%::item} to {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a%{_damage}% HP", "&7✏ Ammo: &a%{_ammo}%", "&7✒ Clip ammo: &a%{_clip}%", "&7⌛ Fire rate: &a%{_firerate}%s", "&7↩  Reload: &a%{_reload}%s", "&7＄ Gold: &a%{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden
+            set {zombies::items::guns::%{_name}%::item} to {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a%{_damage}% HP", "&7✏ Ammo: &a%{_ammo}%", "&7✒ Clip ammo: &a%{_clip}%", "&7⌛ Fire rate: &a%{_firerate}%s", "&7↩  Reload: &a%{_reload}%s", "&7＄ Gold: &a%{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden
     else:
         if {_shotgun} is bigger than 0:
-            set {zombies::items::%{_name}%::item} to glowing {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a&m%{zombies::items::%{_reference}%::damage}%*%{zombies::items::%{_reference}%::shotgun}% HP&6  --> %{_damage}%*%{_shotgun}% HP", "&7✏ Ammo: &a&m%{zombies::items::%{_reference}%::ammo}%&6  -->  %{_ammo}%", "&7✒ Clip ammo: &a&m%{zombies::items::%{_reference}%::clip}%&6  -->  %{_clip}%", "&7⌛ Fire rate: &a&m%{zombies::items::%{_reference}%::firerate}%s&6  -->  %{_firerate}%s", "&7↩  Reload: &a&m%{zombies::items::%{_reference}%::reload}%s&6  -->  %{_reload}%s", "&7＄ Gold: &a&m%{zombies::items::%{_reference}%::goldshot}% (%{zombies::items::%{_reference}%::goldcrit}%)&6  -->  %{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden
+            set {zombies::items::guns::%{_name}%::item} to glowing {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a&m%{zombies::items::guns::%{_reference}%::damage}%*%{zombies::items::guns::%{_reference}%::shotgun}% HP&6  --> %{_damage}%*%{_shotgun}% HP", "&7✏ Ammo: &a&m%{zombies::items::guns::%{_reference}%::ammo}%&6  -->  %{_ammo}%", "&7✒ Clip ammo: &a&m%{zombies::items::guns::%{_reference}%::clip}%&6  -->  %{_clip}%", "&7⌛ Fire rate: &a&m%{zombies::items::guns::%{_reference}%::firerate}%s&6  -->  %{_firerate}%s", "&7↩  Reload: &a&m%{zombies::items::guns::%{_reference}%::reload}%s&6  -->  %{_reload}%s", "&7＄ Gold: &a&m%{zombies::items::guns::%{_reference}%::goldshot}% (%{zombies::items::guns::%{_reference}%::goldcrit}%)&6  -->  %{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden
         else:
-            set {zombies::items::%{_name}%::item} to glowing {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a&m%{zombies::items::%{_reference}%::damage}% HP&6  --> %{_damage}% HP", "&7✏ Ammo: &a&m%{zombies::items::%{_reference}%::ammo}%&6  -->  %{_ammo}%", "&7✒ Clip ammo: &a&m%{zombies::items::%{_reference}%::clip}%&6  -->  %{_clip}%", "&7⌛ Fire rate: &a&m%{zombies::items::%{_reference}%::firerate}%s&6  -->  %{_firerate}%s", "&7↩  Reload: &a&m%{zombies::items::%{_reference}%::reload}%s&6  -->  %{_reload}%s", "&7＄ Gold: &a&m%{zombies::items::%{_reference}%::goldshot}% (%{zombies::items::%{_reference}%::goldcrit}%)&6  -->  %{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden
+            set {zombies::items::guns::%{_name}%::item} to glowing {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a&m%{zombies::items::guns::%{_reference}%::damage}% HP&6  --> %{_damage}% HP", "&7✏ Ammo: &a&m%{zombies::items::guns::%{_reference}%::ammo}%&6  -->  %{_ammo}%", "&7✒ Clip ammo: &a&m%{zombies::items::guns::%{_reference}%::clip}%&6  -->  %{_clip}%", "&7⌛ Fire rate: &a&m%{zombies::items::guns::%{_reference}%::firerate}%s&6  -->  %{_firerate}%s", "&7↩  Reload: &a&m%{zombies::items::guns::%{_reference}%::reload}%s&6  -->  %{_reload}%s", "&7＄ Gold: &a&m%{zombies::items::guns::%{_reference}%::goldshot}% (%{zombies::items::guns::%{_reference}%::goldcrit}%)&6  -->  %{_goldshot}% (%{_goldcrit}%)", " ", "&bLEFT CLICK &7to reload." and "&bRIGHT CLICK &7to shoot." with attributes hidden
 
-    set {zombies::items::%{_name}%::damage} to {_damage}
-    set {zombies::items::%{_name}%::ammo} to {_ammo}
-    set {zombies::items::%{_name}%::clip} to {_clip}
-    set {zombies::items::%{_name}%::firerate} to {_firerate}
-    set {zombies::items::%{_name}%::reload} to {_reload}
-    set {zombies::items::%{_name}%::particle} to {_particle}
-    set {zombies::items::%{_name}%::goldshot} to {_goldshot}
-    set {zombies::items::%{_name}%::goldcrit} to {_goldcrit}
-    set {zombies::items::%{_name}%::sound} to {_sound}
-    set {zombies::items::%{_name}%::pitch} to {_pitch}
-    set {zombies::items::%{_name}%::shotgun} to {_shotgun}
-    set {zombies::items::%{_name}%::burst} to {_burst}
-    set {zombies::items::%{_name}%::burstcooldown} to {_burstcooldown}
+    set {zombies::items::guns::%{_name}%::damage} to {_damage}
+    set {zombies::items::guns::%{_name}%::ammo} to {_ammo}
+    set {zombies::items::guns::%{_name}%::clip} to {_clip}
+    set {zombies::items::guns::%{_name}%::firerate} to {_firerate}
+    set {zombies::items::guns::%{_name}%::reload} to {_reload}
+    set {zombies::items::guns::%{_name}%::particle} to {_particle}
+    set {zombies::items::guns::%{_name}%::goldshot} to {_goldshot}
+    set {zombies::items::guns::%{_name}%::goldcrit} to {_goldcrit}
+    set {zombies::items::guns::%{_name}%::sound} to {_sound}
+    set {zombies::items::guns::%{_name}%::pitch} to {_pitch}
+    set {zombies::items::guns::%{_name}%::shotgun} to {_shotgun}
+    set {zombies::items::guns::%{_name}%::burst} to {_burst}
+    set {zombies::items::guns::%{_name}%::burstcooldown} to {_burstcooldown}
     send "&a(!) Registered custom gun %{_name}%!" to console
-    add {_name} to {zombies::itemlist::*}
+    add {_name} to {zombies::lists::guns::*}
 #rocket lanucher sound entity.generic.burn pitch 0
 on load:
-    clear {zombies::itemlist::*}  
+    clear {zombies::lists::guns::*}  
     set {zombies::multilinelore::powerpistol::*} to "&7God's personal pistol." and "&7Can be enchanted &a3 &7times. "
     set {zombies::multilinelore::ultimate1pistol::*} to "&7God's personal enchanted pistol." and "&7Can be enchanted &a3 &7times. "
     set {zombies::multilinelore::ultimate2pistol::*} to "&7God's personal enchanted enchanted pistol." and "&7Can be enchanted &a3 &7times. "
@@ -105,26 +105,28 @@ on load:
     creategun("ultimate2doublebarrelshotgun", {zombies::specialitemthatdoesntrender}, "&6&lUltimate 2 Double Barrel Shotgun", {zombies::multilinelore::ultimate2doublebarrelshotgun::*}, 8, 36, 3, 0.3, 2.5, "lava", 8, 12, "entity.generic.explode", 1, "ultimate1doublebarrelshotgun", 9)
     creategun("ultimate3doublebarrelshotgun", {zombies::specialitemthatdoesntrender}, "&6&lUltimate 3 Double Barrel Shotgun", {zombies::multilinelore::ultimate3doublebarrelshotgun::*}, 8, 42, 3, 0.3, 2.3, "lava", 8, 12, "entity.generic.explode", 1, "ultimate2doublebarrelshotgun", 9)
 
+    creategun("rocketlauncher", shears, "&9&lRocket Launcher", "&7A gun that launches rockets, this is lit.", 15, 20, 4, 2.0, 3.0, "firework", 20, 30, "entity.goat.eat", 0)
+    creategun("ultimaterocketlauncher", shears, "&6&lUltimate Rocket Launcher", "&7An enchanted gun that launches rockets, this is lit.", 20, 32, 4, 1.5, 2.0, "firework", 20, 30, "entity.goat.eat", 0, "rocketlauncher")
 
-    creategun("rocketlauncher", shears, "&9&lRocket Launcher", "A gun that launches rockets, this is lit.", 15, 20, 4, 2.0, 3.0, "firework", 20, 30, "entity.goat.eat", 0)
-    creategun("ultimaterocketlauncher", shears, "&6&lUltimate Rocket Launcher", "An enchanted gun that launches rockets, this is lit.", 20, 32, 4, 1.5, 2.0, "firework", 20, 30, "entity.goat.eat", 0, "rocketlauncher")
+    
+
 command /getgun [<text>] [<number>]:
     trigger:
-        if "%{zombies::itemlist::*}%" contains arg-1:
+        if "%{zombies::lists::guns::*}%" contains arg-1:
             if arg-2 is set:
-                set slot 1 of player's inventory to {zombies::items::%arg-1%::clip} of {zombies::items::%arg-1%::item}
-                set {zombies::gun::%arg-1%::ammo::%player%} to arg-2
-                set {zombies::gun::%arg-1%::reload::%player%} to false
-                set {zombies::gun::%arg-1%::firerate::%player%} to false 
+                set slot 1 of player to {zombies::items::guns::%arg-1%::clip} of {zombies::items::guns::%arg-1%::item}
+                set {zombies::playerstats::gun::%arg-1%::ammo::%player%} to arg-2
+                set {zombies::playerstats::gun::%arg-1%::reload::%player%} to false
+                set {zombies::playerstats::gun::%arg-1%::firerate::%player%} to false 
                 send "&a(!) You have been given a %arg-1% with %arg-2% ammo!"
             else:
                 send "&c(!) Please specify the amount of ammo you want to have!"
         else:
             send "&c(!) Gun not found!"
-            send "&c(!) Available guns: %{zombies::itemlist::*}%"
+            send "&c(!) Available guns: %{zombies::lists::guns::*}%"
 
 on skbee tab complete for "/getgun":
-    loop {zombies::itemlist::*}:
+    loop {zombies::lists::guns::*}:
         add loop-value to tab completions
 
 

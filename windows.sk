@@ -1,0 +1,18 @@
+command /test2:
+    trigger:
+        if {test.%player%} is false:
+            set {test.%player%} to true
+            send "true"
+        else if {test.%player%} is true:
+            set {test.%player%} to false
+            send "false"
+        else:
+            set {test.%player%} to true
+            send "true"
+
+
+on build:
+    if {test.%player%} is true:
+        set block at event-block to air
+        wait 1 second
+        make player see block at event-block as barrier

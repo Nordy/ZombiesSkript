@@ -13,12 +13,11 @@ on ProjectileHitEvent:
             damage loop-entity by {_damage}
             play sound "entity.player.hurt" at volume 0.7 with pitch 1 to event.getEntity().getShooter()
             if abs((y-coordinate of loop-entity's head) - (event.getEntity()'s y-coordinate)) < 0.55:
-                send "&6+%{zombies::items::%{_gun}%::goldcrit}% Gold (Critical hit)" to event.getEntity().getShooter()
+                send "&6+%{zombies::items::guns::%{_gun}%::goldcrit}% Gold (Critical hit)" to event.getEntity().getShooter()
                 play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 1.5 to event.getEntity().getShooter()
             else:
-                send "&6+%{zombies::items::%{_gun}%::goldshot}% Gold" to event.getEntity().getShooter()
+                send "&6+%{zombies::items::guns::%{_gun}%::goldshot}% Gold" to event.getEntity().getShooter()
                 play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 2 to event.getEntity().getShooter()
-                broadcast "&a%abs((y-coordinate of loop-entity's head) - (event.getEntity()'s y-coordinate))%"
         
             
                 
@@ -59,75 +58,75 @@ function notglowing(p: player):
                     make loop-entity-1 not glow for loop-player
 
 function reload(gun: text, player: player):
-    if {zombies::gun::%{_gun}%::reload::%{_player}%} is not true:
-        if number of {zombies::items::%{_gun}%::item} in {_player}'s inventory is smaller than {zombies::gun::%{_gun}%::ammo::%{_player}%}:
-            if {zombies::gun::%{_gun}%::ammo::%{_player}%} is bigger than 0:
-                set {zombies::gun::%{_gun}%::reload::%{_player}%} to true
+    if {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} is not true:
+        if number of {zombies::items::guns::%{_gun}%::item} in {_player}'s inventory is smaller than {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%}:
+            if {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} is bigger than 0:
+                set {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} to true
                 loop 10 times:
-                    if name of slot (loop-value)-1 of {_player}'s inventory contains name of {zombies::items::%{_gun}%::item}:
+                    if name of slot (loop-value)-1 of {_player}'s inventory contains name of {zombies::items::guns::%{_gun}%::item}:
                         play sound "entity.horse.gallop" at volume 0.8 with pitch 0 to {_player}
                         play sound "entity.armor_stand.hit" at volume 0.8 with pitch 2 to {_player}
                         set {_loopvalue} to (loop-value)-1
                         set {_counter} to 0.0
-                        if name of {_player}'s held item is name of {zombies::items::%{_gun}%::item}:
+                        if name of {_player}'s held item is name of {zombies::items::guns::%{_gun}%::item}:
                             set level progress of {_player} to 0
                         loop 30 times:
-                            if {zombies::items::%{_gun}%::reload} / loop-value-2 >= 0.05:
+                            if {zombies::items::guns::%{_gun}%::reload} / loop-value-2 >= 0.05:
                                 set {_amount} to loop-value-2
 
                         loop {_amount} times:
                             set {_nbt} to nbt compound from "{Damage:%(max durability of slot {_loopvalue} of {_player}'s inventory) - ({_counter})%}"
-                            set slot {_loopvalue} of {_player} to {zombies::items::%{_gun}%::item} with nbt {_nbt}
+                            set slot {_loopvalue} of {_player} to {zombies::items::guns::%{_gun}%::item} with nbt {_nbt}
                             add (max durability of slot {_loopvalue} of {_player}'s inventory) / {_amount} to {_counter}
-                            wait "%({zombies::items::%{_gun}%::reload} / {_amount})% seconds" parsed as a timespan
+                            wait "%({zombies::items::guns::%{_gun}%::reload} / {_amount})% seconds" parsed as a timespan
                         set {_nbt} to nbt compound from "{Damage:0}"
-                        if mod({zombies::gun::%{_gun}%::ammo::%{_player}%}, {zombies::items::%{_gun}%::clip}) is 0:
-                            set slot {_loopvalue} of {_player} to {zombies::items::%{_gun}%::clip} of {zombies::items::%{_gun}%::item} with nbt {_nbt}
+                        if mod({zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%}, {zombies::items::guns::%{_gun}%::clip}) is 0:
+                            set slot {_loopvalue} of {_player} to {zombies::items::guns::%{_gun}%::clip} of {zombies::items::guns::%{_gun}%::item} with nbt {_nbt}
                         
                         else:
-                            if {zombies::gun::%{_gun}%::ammo::%{_player}%} is smaller than {zombies::items::%{_gun}%::clip}:
-                                set slot {_loopvalue} of {_player} to {zombies::gun::%{_gun}%::ammo::%{_player}%} of {zombies::items::%{_gun}%::item} with nbt {_nbt}
+                            if {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} is smaller than {zombies::items::guns::%{_gun}%::clip}:
+                                set slot {_loopvalue} of {_player} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} of {zombies::items::guns::%{_gun}%::item} with nbt {_nbt}
                             else:
-                                set slot {_loopvalue} of {_player} to {zombies::items::%{_gun}%::clip} of {zombies::items::%{_gun}%::item} with nbt {_nbt}
+                                set slot {_loopvalue} of {_player} to {zombies::items::guns::%{_gun}%::clip} of {zombies::items::guns::%{_gun}%::item} with nbt {_nbt}
                         exit loop
-                if name of {_player}'s held item is name of {zombies::items::%{_gun}%::item}:
-                    set level of {_player} to {zombies::gun::%{_gun}%::ammo::%{_player}%}
-                    if {zombies::gun::%{_gun}%::ammo::%{_player}%} is bigger than 0:
+                if name of {_player}'s held item is name of {zombies::items::guns::%{_gun}%::item}:
+                    set level of {_player} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%}
+                    if {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} is bigger than 0:
                         set level progress of {_player} to 0.99
                     else:
                         set level progress of {_player} to 0
-                set {zombies::gun::%{_gun}%::reload::%{_player}%} to false
+                set {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} to false
             else:
                 send action bar "&cYou don't have any ammo left!" to {_player}
                 set level progress of {_player} to 0
                 set level of {_player} to 0
                 loop 10 times:
-                    if name of slot (loop-value)-1 of {_player}'s inventory contains name of {zombies::items::%{_gun}%::item}:
+                    if name of slot (loop-value)-1 of {_player}'s inventory contains name of {zombies::items::guns::%{_gun}%::item}:
                         set {_loopvalue} to (loop-value)-1
                         set {_nbt} to nbt compound from "{Damage:%(max durability of slot {_loopvalue} of {_player}'s inventory)%}"
-                        set slot {_loopvalue} of {_player} to {zombies::items::%{_gun}%::item} with nbt {_nbt}
+                        set slot {_loopvalue} of {_player} to {zombies::items::guns::%{_gun}%::item} with nbt {_nbt}
                     exit loop
 
 
 function shoot(gun: text, player: player, block: block, entity: entity):
-    if {zombies::gun::%{_gun}%::ammo::%{_player}%} is bigger than 0:
-        if {zombies::gun::%{_gun}%::reload::%{_player}%} is not true:
-            if {zombies::gun::%{_gun}%::firerate::%{_player}%} is not true:
+    if {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} is bigger than 0:
+        if {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} is not true:
+            if {zombies::playerstats::gun::%{_gun}%::firerate::%{_player}%} is not true:
                 if {_gun} contains "shotgun":
-                    loop {zombies::items::%{_gun}%::burst} times:
-                        set {zombies::gun::%{_gun}%::firerate::%{_player}%} to true
+                    loop {zombies::items::guns::%{_gun}%::burst} times:
+                        set {zombies::playerstats::gun::%{_gun}%::firerate::%{_player}%} to true
                         send action bar "" to {_player}
                         set {_location} to location of {_player}'s head
                         set {_vector} to vector from yaw {_player}'s yaw and pitch {_player}'s pitch
                         set {_exactblock} to exact target block of {_player}
                         set vector length of {_vector} to 1 
                         set {_origlocation} to {_location} ~ {_vector}
-                        play sound {zombies::items::%{_gun}%::sound} at volume 1 with pitch {zombies::items::%{_gun}%::pitch} to {_player}
-                        loop {zombies::items::%{_gun}%::shotgun} times:
+                        play sound {zombies::items::guns::%{_gun}%::sound} at volume 1 with pitch {zombies::items::guns::%{_gun}%::pitch} to {_player}
+                        loop {zombies::items::guns::%{_gun}%::shotgun} times:
                             set {_randomvector} to vector(random number between -0.3 and 0.3, random number between -0.3 and 0.3, random number between -0.3 and 0.3)
                             set {_location} to {_location} ~ {_randomvector}
                             loop 3 times:
-                                draw 1 ({zombies::items::%{_gun}%::particle} parsed as a particle) at {_origlocation} ~ {_randomvector} with extra 0
+                                draw 1 ({zombies::items::guns::%{_gun}%::particle} parsed as a particle) at {_origlocation} ~ {_randomvector} with extra 0
                                 set {_location} to {_location} ~ {_vector} 
                             set {_location} to {_origlocation} ~ {_randomvector}
                             set {_stop} to false
@@ -136,12 +135,12 @@ function shoot(gun: text, player: player, block: block, entity: entity):
                                 loop all entities in radius 2 of {_location}:
                                     set {_stop} to true
                                     if loop-entity is a monster:
-                                        damage loop-entity by {zombies::items::%{_gun}%::damage}
+                                        damage loop-entity by {zombies::items::guns::%{_gun}%::damage}
                                         if distance between loop-entity's head and {_location} < 0.85:
-                                            send "&6+%{zombies::items::%{_gun}%::goldcrit}% Gold (Critical hit)" to {_player}
+                                            send "&6+%{zombies::items::guns::%{_gun}%::goldcrit}% Gold (Critical hit)" to {_player}
                                             play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 1.5 to {_player}
                                         else:
-                                            send "&6+%{zombies::items::%{_gun}%::goldshot}% Gold" to {_player}
+                                            send "&6+%{zombies::items::guns::%{_gun}%::goldshot}% Gold" to {_player}
                                             play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 2 to {_player}
                                 if {_stop} is true:
                                     exit loop
@@ -149,40 +148,48 @@ function shoot(gun: text, player: player, block: block, entity: entity):
 
 
 
-                        if number of {zombies::items::%{_gun}%::item} in {_player}'s inventory is bigger than 1:
-                            remove 1 of {zombies::items::%{_gun}%::item} from {_player}'s inventory
+                        if number of {zombies::items::guns::%{_gun}%::item} in {_player}'s inventory is bigger than 1:
+                            remove 1 of {zombies::items::guns::%{_gun}%::item} from {_player}'s inventory
                         else:
-                            if {zombies::gun::%{_gun}%::reload::%{_player}%} is not true:
+                            if {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} is not true:
                                 reload({_gun}, {_player})
-                        if name of {_player}'s tool is the name of {zombies::items::%{_gun}%::item}:
-                            set {zombies::gun::%{_gun}%::ammo::%{_player}%} to {zombies::gun::%{_gun}%::ammo::%{_player}%} - 1
-                            set level of {_player} to {zombies::gun::%{_gun}%::ammo::%{_player}%}
+                        if name of {_player}'s tool is the name of {zombies::items::guns::%{_gun}%::item}:
+                            set {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} - 1
+                            set level of {_player} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%}
 
                 else if {_gun} contains "launcher":
-                    loop {zombies::items::%{_gun}%::burst} times:
-                        set {zombies::gun::%{_gun}%::firerate::%{_player}%} to true
+                    loop {zombies::items::guns::%{_gun}%::burst} times:
+                        set {zombies::playerstats::gun::%{_gun}%::firerate::%{_player}%} to true
                         send action bar "" to {_player}
-                        play sound {zombies::items::%{_gun}%::sound} at volume 1 with pitch {zombies::items::%{_gun}%::pitch} to {_player}
+                        play sound {zombies::items::guns::%{_gun}%::sound} at volume 1 with pitch {zombies::items::guns::%{_gun}%::pitch} to {_player}
                         set level progress of {_player} to 0
                         shoot a fireball from {_player} at speed 2
+                        if number of {zombies::items::guns::%{_gun}%::item} in {_player}'s inventory is bigger than 1:
+                            remove 1 of {zombies::items::guns::%{_gun}%::item} from {_player}'s inventory
+                        else:
+                            if {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} is not true:
+                                reload({_gun}, {_player})
+                        if name of {_player}'s tool is the name of {zombies::items::guns::%{_gun}%::item}:
+                            set {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} - 1
+                            set level of {_player} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%}
                                 
 
 
                 else:
-                    loop {zombies::items::%{_gun}%::burst} times:
+                    loop {zombies::items::guns::%{_gun}%::burst} times:
                         send action bar "" to {_player}
-                        set {zombies::gun::%{_gun}%::firerate::%{_player}%} to true
+                        set {zombies::playerstats::gun::%{_gun}%::firerate::%{_player}%} to true
                         set {_location} to location of {_player}'s head
                         set {_vector} to vector from yaw {_player}'s yaw and pitch {_player}'s pitch
                         set vector length of {_vector} to 1 
-                        play sound {zombies::items::%{_gun}%::sound} at volume 1 with pitch {zombies::items::%{_gun}%::pitch} to {_player}
-                        if {zombies::items::%{_gun}%::particle} is "dust_color_transition":
+                        play sound {zombies::items::guns::%{_gun}%::sound} at volume 1 with pitch {zombies::items::guns::%{_gun}%::pitch} to {_player}
+                        if {zombies::items::guns::%{_gun}%::particle} is "dust_color_transition":
                             set {_color1} to floor(random number between 0 and 255)
                             set {_color2} to floor(random number between 0 and 255)
                             set {_color3} to floor(random number between 0 and 255)
                             draw 1 of dust_color_transition using dustTransition(rgb({_color1}, {_color2}, {_color3}), rgb({_color1}, {_color2}, {_color3}), 1) at {_location} ~ {_vector} with extra 0
                         else:
-                            draw 1 ({zombies::items::%{_gun}%::particle} parsed as a particle) at {_location} ~ {_vector} with extra 0 
+                            draw 1 ({zombies::items::guns::%{_gun}%::particle} parsed as a particle) at {_location} ~ {_vector} with extra 0 
                         set level progress of {_player} to 0
                         if distance between {_location} and {_block} is smaller than 400:
                             if distance between {_location} and {_entity} is smaller than distance between {_location} and {_block}:
@@ -193,13 +200,13 @@ function shoot(gun: text, player: player, block: block, entity: entity):
                                     set {_crit} to false
                                     loop (distance between {_location} and {_targetlocation})+2 times:
                                         chance of 40%:
-                                            if {zombies::items::%{_gun}%::particle} is "dust_color_transition":
+                                            if {zombies::items::guns::%{_gun}%::particle} is "dust_color_transition":
                                                 set {_color1} to floor(random number between 0 and 255)
                                                 set {_color2} to floor(random number between 0 and 255)
                                                 set {_color3} to floor(random number between 0 and 255)
                                                 draw 1 of dust_color_transition using dustTransition(rgb({_color1}, {_color2}, {_color3}), rgb({_color1}, {_color2}, {_color3}), 1) at {_location} ~ {_vector} with extra 0
                                             else:
-                                                draw 1 ({zombies::items::%{_gun}%::particle} parsed as a particle) at {_location} ~ {_vector} with extra 0
+                                                draw 1 ({zombies::items::guns::%{_gun}%::particle} parsed as a particle) at {_location} ~ {_vector} with extra 0
                                         set {_location} to {_location} ~ {_vector}
                                         if distance between {_targetlocationhead} and {_location} < 0.7:
                                             set {_crit} to true
@@ -207,31 +214,31 @@ function shoot(gun: text, player: player, block: block, entity: entity):
                                         loop all entities in radius 3 of {_targetlocation}:
                                             if loop-entity is a monster:
                                                 if loop-entity is not {_entity}:
-                                                    damage loop-entity by {zombies::items::%{_gun}%::damage}/2
+                                                    damage loop-entity by {zombies::items::guns::%{_gun}%::damage}/2
                                                     set {_chance} to a random integer between 1 and 100
                                                     if {_chance} is between 1 and 30:
-                                                        send "&6+%{zombies::items::%{_gun}%::goldcrit}% Gold (Critical hit)" to {_player}
+                                                        send "&6+%{zombies::items::guns::%{_gun}%::goldcrit}% Gold (Critical hit)" to {_player}
                                                         play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 1.5 to {_player}
                                                     else:
-                                                        send "&6+%{zombies::items::%{_gun}%::goldshot}% Gold" to {_player}
+                                                        send "&6+%{zombies::items::guns::%{_gun}%::goldshot}% Gold" to {_player}
                                                         play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 2 to {_player} 
-                                    damage {_entity} by {zombies::items::%{_gun}%::damage}/2
+                                    damage {_entity} by {zombies::items::guns::%{_gun}%::damage}/2
                                     if {_crit} is true:
-                                        send "&6+%{zombies::items::%{_gun}%::goldcrit}% Gold (Critical hit)" to {_player}
+                                        send "&6+%{zombies::items::guns::%{_gun}%::goldcrit}% Gold (Critical hit)" to {_player}
                                         play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 1.5 to {_player}
                                     else:
-                                        send "&6+%{zombies::items::%{_gun}%::goldshot}% Gold" to {_player}
+                                        send "&6+%{zombies::items::guns::%{_gun}%::goldshot}% Gold" to {_player}
                                         play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 2 to {_player}
                                 else:
                                     loop (distance between {_location} and {_block})+2 times:
                                         chance of 40%:
-                                            if {zombies::items::%{_gun}%::particle} is "dust_color_transition":
+                                            if {zombies::items::guns::%{_gun}%::particle} is "dust_color_transition":
                                                 set {_color1} to floor(random number between 0 and 255)
                                                 set {_color2} to floor(random number between 0 and 255)
                                                 set {_color3} to floor(random number between 0 and 255)
                                                 draw 1 of dust_color_transition using dustTransition(rgb({_color1}, {_color2}, {_color3}), rgb({_color1}, {_color2}, {_color3}), 1) at {_location} ~ {_vector} with extra 0
                                             else:
-                                                draw 1 ({zombies::items::%{_gun}%::particle} parsed as a particle) at {_location} ~ {_vector} with extra 0
+                                                draw 1 ({zombies::items::guns::%{_gun}%::particle} parsed as a particle) at {_location} ~ {_vector} with extra 0
                                         set {_location} to {_location} ~ {_vector} 
                             
                             else if {_gun} contains "sniper":
@@ -242,97 +249,97 @@ function shoot(gun: text, player: player, block: block, entity: entity):
                                     set {_crit} to false
                                     loop (distance between {_location} and {_targetlocation})+2 times:
                                         chance of 40%:
-                                            draw 1 ({zombies::items::%{_gun}%::particle} parsed as a particle) at {_location} ~ {_vector} with extra 0
+                                            draw 1 ({zombies::items::guns::%{_gun}%::particle} parsed as a particle) at {_location} ~ {_vector} with extra 0
                                         set {_location} to {_location} ~ {_vector}
                                         if distance between {_targetlocationhead} and {_location} < 0.7:
                                             set {_crit} to true
 
-                                    damage {_entity} by {zombies::items::%{_gun}%::damage}/2
+                                    damage {_entity} by {zombies::items::guns::%{_gun}%::damage}/2
                                     if {_crit} is true:
-                                        send "&6+%{zombies::items::%{_gun}%::goldcrit}% Gold (Critical hit)" to {_player}
+                                        send "&6+%{zombies::items::guns::%{_gun}%::goldcrit}% Gold (Critical hit)" to {_player}
                                         play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 1.5 to {_player}
                                     else:
-                                        send "&6+%{zombies::items::%{_gun}%::goldshot}% Gold" to {_player}
+                                        send "&6+%{zombies::items::guns::%{_gun}%::goldshot}% Gold" to {_player}
                                         play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 2 to {_player}
                                 else:
                                     loop (distance between {_location} and {_block})+2 times:
                                         chance of 40%:
-                                            draw 1 ({zombies::items::%{_gun}%::particle} parsed as a particle) at {_location} ~ {_vector} with extra 0
+                                            draw 1 ({zombies::items::guns::%{_gun}%::particle} parsed as a particle) at {_location} ~ {_vector} with extra 0
                                         set {_location} to {_location} ~ {_vector}
                             else:
                                 loop (distance between {_location} and {_block})+2 times:
                                     chance of 40%:
-                                        if {zombies::items::%{_gun}%::particle} is "dust_color_transition":
+                                        if {zombies::items::guns::%{_gun}%::particle} is "dust_color_transition":
                                             set {_color1} to floor(random number between 0 and 255)
                                             set {_color2} to floor(random number between 0 and 255)
                                             set {_color3} to floor(random number between 0 and 255)
                                             draw 1 of dust_color_transition using dustTransition(rgb({_color1}, {_color2}, {_color3}), rgb({_color1}, {_color2}, {_color3}), 1) at {_location} ~ {_vector} with extra 0
                                         else:
-                                            draw 1 ({zombies::items::%{_gun}%::particle} parsed as a particle) at {_location} ~ {_vector} with extra 0
+                                            draw 1 ({zombies::items::guns::%{_gun}%::particle} parsed as a particle) at {_location} ~ {_vector} with extra 0
                                     set {_location} to {_location} ~ {_vector} 
                         else:
                             loop (distance between {_location} and {_block})+2 times:
                                 chance of 40%:
-                                    if {zombies::items::%{_gun}%::particle} is "dust_color_transition":
+                                    if {zombies::items::guns::%{_gun}%::particle} is "dust_color_transition":
                                         set {_color1} to floor(random number between 0 and 255)
                                         set {_color2} to floor(random number between 0 and 255)
                                         set {_color3} to floor(random number between 0 and 255)
                                         draw 1 of dust_color_transition using dustTransition(rgb({_color1}, {_color2}, {_color3}), rgb({_color1}, {_color2}, {_color3}), 1) at {_location} ~ {_vector} with extra 0
                                     else:
-                                        draw 1 ({zombies::items::%{_gun}%::particle} parsed as a particle) at {_location} ~ {_vector} with extra 0
+                                        draw 1 ({zombies::items::guns::%{_gun}%::particle} parsed as a particle) at {_location} ~ {_vector} with extra 0
                                 set {_location} to {_location} ~ {_vector} 
-                        if number of {zombies::items::%{_gun}%::item} in {_player}'s inventory is bigger than 1:
-                            remove 1 of {zombies::items::%{_gun}%::item} from {_player}'s inventory
+                        if number of {zombies::items::guns::%{_gun}%::item} in {_player}'s inventory is bigger than 1:
+                            remove 1 of {zombies::items::guns::%{_gun}%::item} from {_player}'s inventory
                         else:
-                            if {zombies::gun::%{_gun}%::reload::%{_player}%} is not true:
+                            if {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} is not true:
                                 reload({_gun}, {_player})
-                        if name of {_player}'s tool is the name of {zombies::items::%{_gun}%::item}:
-                            set {zombies::gun::%{_gun}%::ammo::%{_player}%} to {zombies::gun::%{_gun}%::ammo::%{_player}%} - 1
-                            set level of {_player} to {zombies::gun::%{_gun}%::ammo::%{_player}%}
+                        if name of {_player}'s tool is the name of {zombies::items::guns::%{_gun}%::item}:
+                            set {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} - 1
+                            set level of {_player} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%}
 
-                        wait "%{zombies::items::%{_gun}%::burstcooldown}% seconds" parsed as a timespan
-                set {zombies::gun::%{_gun}%::firecooldown::%{_player}%} to 0
+                        wait "%{zombies::items::guns::%{_gun}%::burstcooldown}% seconds" parsed as a timespan
+                set {zombies::playerstats::gun::%{_gun}%::firecooldown::%{_player}%} to 0
 
                 loop 20 times:
-                    if {zombies::items::%{_gun}%::firerate} / loop-value >= 0.05:
+                    if {zombies::items::guns::%{_gun}%::firerate} / loop-value >= 0.05:
                         set {_num} to loop-value
 
                 loop {_num} times:
-                    set {zombies::gun::%{_gun}%::firecooldown::%{_player}%} to {zombies::gun::%{_gun}%::firecooldown::%{_player}%} + (0.99/{_num})
-                    if name of {_player}'s held item is name of {zombies::items::%{_gun}%::item}:
-                        if {zombies::gun::%{_gun}%::ammo::%{_player}%} is bigger than 0:
-                            if {zombies::gun::%{_gun}%::reload::%{_player}%} is not true:
-                                set level progress of {_player} to {zombies::gun::%{_gun}%::firecooldown::%{_player}%}
+                    set {zombies::playerstats::gun::%{_gun}%::firecooldown::%{_player}%} to {zombies::playerstats::gun::%{_gun}%::firecooldown::%{_player}%} + (0.99/{_num})
+                    if name of {_player}'s held item is name of {zombies::items::guns::%{_gun}%::item}:
+                        if {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} is bigger than 0:
+                            if {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} is not true:
+                                set level progress of {_player} to {zombies::playerstats::gun::%{_gun}%::firecooldown::%{_player}%}
                         else:
                             reload({_gun}, {_player})
-                    wait "%({zombies::items::%{_gun}%::firerate}/{_num})+(0.05/{_num})% seconds" parsed as a timespan
-                set {zombies::gun::%{_gun}%::firecooldown::%{_player}%} to 0
-                set {zombies::gun::%{_gun}%::firerate::%{_player}%} to false
+                    wait "%({zombies::items::guns::%{_gun}%::firerate}/{_num})+(0.05/{_num})% seconds" parsed as a timespan
+                set {zombies::playerstats::gun::%{_gun}%::firecooldown::%{_player}%} to 0
+                set {zombies::playerstats::gun::%{_gun}%::firerate::%{_player}%} to false
     else:
         send action bar "&cYou don't have any ammo left!" to {_player}
         set level progress of {_player} to 0
         loop 10 times:
-            if name of slot (loop-value)-1 of {_player}'s inventory contains name of {zombies::items::%{_gun}%::item}:
+            if name of slot (loop-value)-1 of {_player}'s inventory contains name of {zombies::items::guns::%{_gun}%::item}:
                 set {_loopvalue} to (loop-value)-1
                 set {_nbt} to nbt compound from "{Damage:%(max durability of slot {_loopvalue} of {_player}'s inventory)%}"
-                set slot {_loopvalue} of {_player} to {zombies::items::%{_gun}%::item} with nbt {_nbt}
+                set slot {_loopvalue} of {_player} to {zombies::items::guns::%{_gun}%::item} with nbt {_nbt}
                 exit loop        
 
 on held item change:
-    loop {zombies::itemlist::*}:
-        if name of player's held item is name of {zombies::items::%loop-value%::item}:
+    loop {zombies::lists::guns::*}:
+        if name of player's held item is name of {zombies::items::guns::%loop-value%::item}:
             if name of player's held item contains "sniper":
                 apply potion of slowness 4 without particles to player for 999 days
             else:
                 remove slowness from player
-            set level of player to {zombies::gun::%loop-value%::ammo::%player%}
-            if {zombies::gun::%loop-value%::ammo::%player%} is bigger than 0:
-                if {zombies::gun::%loop-value%::reload::%player%} is not true:
-                    if {zombies::gun::%loop-value%::firecooldown::%player%} is 0:
+            set level of player to {zombies::playerstats::gun::%loop-value%::ammo::%player%}
+            if {zombies::playerstats::gun::%loop-value%::ammo::%player%} is bigger than 0:
+                if {zombies::playerstats::gun::%loop-value%::reload::%player%} is not true:
+                    if {zombies::playerstats::gun::%loop-value%::firecooldown::%player%} is 0:
                         set level progress of player to 0.99
                         send action bar "" to player
                     else:
-                        set level progress of player to {zombies::gun::%loop-value%::firecooldown::%player%}
+                        set level progress of player to {zombies::playerstats::gun::%loop-value%::firecooldown::%player%}
                         send action bar "" to player
                 else:
                     set level progress of player to 0.00
@@ -352,16 +359,16 @@ on held item change:
 
 every second:
     loop all players:
-        loop {zombies::itemlist::*}:
-            if name of loop-player's held item is name of {zombies::items::%loop-value-2%::item}:
-                set level of loop-player to {zombies::gun::%loop-value-2%::ammo::%loop-player%}
-                if {zombies::gun::%loop-value-2%::ammo::%loop-player%} is bigger than 0:
-                    if {zombies::gun::%loop-value-2%::reload::%loop-player%} is not true:
-                        if {zombies::gun::%loop-value-2%::firecooldown::%loop-player%} is 0:
+        loop {zombies::lists::guns::*}:
+            if name of loop-player's held item is name of {zombies::items::guns::%loop-value-2%::item}:
+                set level of loop-player to {zombies::playerstats::gun::%loop-value-2%::ammo::%loop-player%}
+                if {zombies::playerstats::gun::%loop-value-2%::ammo::%loop-player%} is bigger than 0:
+                    if {zombies::playerstats::gun::%loop-value-2%::reload::%loop-player%} is not true:
+                        if {zombies::playerstats::gun::%loop-value-2%::firecooldown::%loop-player%} is 0:
                             set level progress of loop-player to 0.99
                             send action bar "" to loop-player
                         else:
-                            set level progress of loop-player to {zombies::gun::%loop-value-2%::firecooldown::%loop-player%}
+                            set level progress of loop-player to {zombies::playerstats::gun::%loop-value-2%::firecooldown::%loop-player%}
                             send action bar "" to loop-player
                     else:
                         set level progress of loop-player to 0.00
@@ -398,10 +405,10 @@ on any move:
     
 
 on left click:
-    loop {zombies::itemlist::*}:
-        if name of event-item is name of {zombies::items::%loop-value%::item}:
+    loop {zombies::lists::guns::*}:
+        if name of event-item is name of {zombies::items::guns::%loop-value%::item}:
             cancel event
-            if number of {zombies::items::%loop-value%::item} in player's inventory is smaller than {zombies::items::%loop-value%::clip}:
+            if number of {zombies::items::guns::%loop-value%::item} in player's inventory is smaller than {zombies::items::guns::%loop-value%::clip}:
                 reload(loop-value, player)
                 exit loop
 
@@ -409,18 +416,9 @@ on damage:
     if projectile is a large fireball:
         cancel event       
 
-
-
-# on damage:
-#     if event-entity is a player:
-#         if event-entity's tool is not air:
-#             if name of event-entity's tool is in {zombies::gunlist::*}:
-#                 cancel event
-#                 shoot(name of event-entity's tool, event-entity, exact target block, target entity)
-
 on right click:
-    loop {zombies::itemlist::*}:
-        if name of player's held item is name of {zombies::items::%loop-value%::item}:
+    loop {zombies::lists::guns::*}:
+        if name of player's held item is name of {zombies::items::guns::%loop-value%::item}:
             cancel event
             shoot(loop-value, player, exact target block, target entity)
             exit loop
