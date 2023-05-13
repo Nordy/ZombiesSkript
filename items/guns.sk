@@ -115,9 +115,9 @@ command /getgun [<text>] [<number>]:
         if "%{zombies::lists::guns::*}%" contains arg-1:
             if arg-2 is set:
                 set slot 1 of player to {zombies::items::guns::%arg-1%::clip} of {zombies::items::guns::%arg-1%::item}
-                set {zombies::playerstats::gun::%arg-1%::ammo::%player%} to arg-2
-                set {zombies::playerstats::gun::%arg-1%::reload::%player%} to false
-                set {zombies::playerstats::gun::%arg-1%::firerate::%player%} to false 
+                set {zombies::playerstats::%player%::gun::%arg-1%::ammo} to arg-2
+                set {zombies::playerstats::%player%::gun::%arg-1%::reload} to false
+                set {zombies::playerstats::%player%::gun::%arg-1%::firerate} to false 
                 send "&a(!) You have been given a %arg-1% with %arg-2% ammo!"
             else:
                 send "&c(!) Please specify the amount of ammo you want to have!"

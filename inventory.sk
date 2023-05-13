@@ -1,6 +1,6 @@
 on load:
     set {zombies::items::inventory::emptygun} to 1 of lime dye named "&c&oGun Slot" with lore "&8Fill this up by buying more guns!"
-    set {zombies::items::inventory::emptyability} to 1 of gray dye named "&c&oAbility Slot" with lore "&8Fill this up by buying more abilities!"
+    set {zombies::items::inventory::emptyskill} to 1 of gray dye named "&c&oDkill Slot" with lore "&8Fill this up by buying more abilities!"
     set {zombies::items::inventory::emptyperk} to 1 of light blue dye named "&c&oPerk Slot" with lore "&8Fill this up by buying more perks!"
 
 
@@ -19,9 +19,9 @@ function obtainGun(p: player, g: text, s: number = -1):
                 if {_s} is -1:
                     set {_s} to 0
         set slot {_s} of {_p} to {zombies::items::guns::%{_g}%::clip} of {zombies::items::guns::%{_g}%::item}
-        set {zombies::playerstats::gun::%{_g}%::ammo::%{_p}%} to {zombies::items::guns::%{_g}%::ammo}
-        set {zombies::playerstats::gun::%{_g}%::reload::%{_p}%} to false
-        set {zombies::playerstats::gun::%{_g}%::firerate::%{_p}%} to false
+        set {zombies::playerstats::%{_p}%::gun::%{_g}%::ammo} to {zombies::items::guns::%{_g}%::ammo}
+        set {zombies::playerstats::%{_p}%::gun::%{_g}%::reload} to false
+        set {zombies::playerstats::%{_p}%::gun::%{_g}%::firerate} to false
 
 function defaultInventory(p: player):
     loop 36 times:
@@ -38,7 +38,7 @@ function defaultInventory(p: player):
     set slot 2 of {_p}'s inventory to {zombies::items::inventory::emptygun}
     set slot 3 of {_p}'s inventory to {zombies::items::inventory::emptygun}
     set slot 4 of {_p}'s inventory to {zombies::items::inventory::emptygun}
-    set slot 5 of {_p}'s inventory to {zombies::items::inventory::emptyability}
+    set slot 5 of {_p}'s inventory to {zombies::items::inventory::emptyskill}
     set slot 6 of {_p}'s inventory to {zombies::items::inventory::emptyperk}
     set slot 7 of {_p}'s inventory to {zombies::items::inventory::emptyperk}
     set slot 8 of {_p}'s inventory to {zombies::items::inventory::emptyperk}

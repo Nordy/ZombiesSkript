@@ -25,6 +25,22 @@ on load:
     buyholo("rifle", "Rifle", wooden axe, 200, location(-3.5, 230.5, -107.5, world("world")))
     buyholo("sharpknife", "Sharp Knife", iron sword, 100, location(-19.5, 231.5, -86.5, world("world")))
     buyholo("shield", "Shield", shield, 400, location(-29.5, 231.5, -86.5, world("world")))
+    
+    buyholo("tier2pistol", "Tier 2 Pistol", iron hoe, 500, location(-42.5, 230.5, -124.5, world("world")))
+    buyholo("tier2shotgun", "Tier 2 Shotgun", iron pickaxe, 700, location(-3.5, 230.5, -145.5, world("world")))
+    buyholo("tier2sniper", "Tier 2 Sniper", iron shovel, 1000, location(-6.5, 230.5, -124.5, world("world")))
+    buyholo("tier2rifle", "Tier 2 Rifle", iron axe, 400, location(-45.5, 230.5, -145.5, world("world")))
+ 
+    buyholo("tier3pistol", "Tier 3 Pistol", diamond hoe, 700, location(-45.5, 230.5, -172.5, world("world")))
+    buyholo("tier3shotgun", "Tier 3 Shotgun", diamond pickaxe, 900, location(-6.5, 230.5, -175.5, world("world")))
+    buyholo("tier3sniper", "Tier 3 Sniper", diamond shovel, 1200, location(-3.5, 230.5, -172.5, world("world")))
+    buyholo("tier3rifle", "Tier 3 Rifle", diamond axe, 600, location(-42.5, 230.5, -175.5, world("world")))
+
+    buyholo("tier4pistol", "Tier 4 Pistol", netherite hoe, 900, location(-21.5, 230.5, -195.5, world("world")))
+    buyholo("tier4shotgun", "Tier 4 Shotgun", netherite pickaxe, 1100, location(-21.5, 230.5, -203.5, world("world")))
+    buyholo("tier4sniper", "Tier 4 Sniper", netherite shovel, 1400, location(-27.5, 230.5, -203.5, world("world")))
+    buyholo("tier4rifle", "Tier 4 Rifle", netherite axe, 800, location(-27.5, 230.5, -195.5, world("world")))
+    
     closedwinholo("window1", 20, location(-3.5, 230.5, -104, world("world")))
     closedwinholo("window2", 20, location(-45.5, 230.5, -105.5, world("world")))
     closedwinholo("window3", 25, location(-24.5, 230.5, -90.5, world("world")))
@@ -33,7 +49,6 @@ on load:
 
 on hd hologram click:
     broadcast "%id of event-hologram%"
-
 
 command /holocoords:
     trigger:

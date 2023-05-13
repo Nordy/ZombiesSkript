@@ -14,6 +14,7 @@ on ProjectileHitEvent:
             play sound "entity.player.hurt" at volume 0.7 with pitch 1 to event.getEntity().getShooter()
             if abs((y-coordinate of loop-entity's head) - (event.getEntity()'s y-coordinate)) < 0.55:
                 send "&6+%{zombies::items::guns::%{_gun}%::goldcrit}% Gold (Critical hit)" to event.getEntity().getShooter()
+                add {zombies::items::guns::%{_gun}%::goldcrit} to {zombies::playerstats::%event.getEntity().getShooter()%::gold}
                 play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 1.5 to event.getEntity().getShooter()
             else:
                 send "&6+%{zombies::items::guns::%{_gun}%::goldshot}% Gold" to event.getEntity().getShooter()
@@ -63,10 +64,10 @@ function notglowing(p: player):
                     make loop-entity-1 not glow for loop-player
 
 function reload(gun: text, player: player):
-    if {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} is not true:
-        if number of {zombies::items::guns::%{_gun}%::item} in {_player}'s inventory is smaller than {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%}:
-            if {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} is bigger than 0:
-                set {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} to true
+    if {zombies::playerstats::%{_player}%::gun::%{_gun}%::reload} is not true:
+        if number of {zombies::items::guns::%{_gun}%::item} in {_player}'s inventory is smaller than {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo}:
+            if {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo} is bigger than 0:
+                set {zombies::playerstats::%{_player}%::gun::%{_gun}%::reload} to true
                 loop 10 times:
                     if name of slot (loop-value)-1 of {_player}'s inventory contains name of {zombies::items::guns::%{_gun}%::item}:
                         play sound "entity.horse.gallop" at volume 0.8 with pitch 0 to {_player}
@@ -85,22 +86,22 @@ function reload(gun: text, player: player):
                             add (max durability of slot {_loopvalue} of {_player}'s inventory) / {_amount} to {_counter}
                             wait "%({zombies::items::guns::%{_gun}%::reload} / {_amount})% seconds" parsed as a timespan
                         set {_nbt} to nbt compound from "{Damage:0}"
-                        if mod({zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%}, {zombies::items::guns::%{_gun}%::clip}) is 0:
+                        if mod({zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo}, {zombies::items::guns::%{_gun}%::clip}) is 0:
                             set slot {_loopvalue} of {_player} to {zombies::items::guns::%{_gun}%::clip} of {zombies::items::guns::%{_gun}%::item} with nbt {_nbt}
                         
                         else:
-                            if {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} is smaller than {zombies::items::guns::%{_gun}%::clip}:
-                                set slot {_loopvalue} of {_player} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} of {zombies::items::guns::%{_gun}%::item} with nbt {_nbt}
+                            if {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo} is smaller than {zombies::items::guns::%{_gun}%::clip}:
+                                set slot {_loopvalue} of {_player} to {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo} of {zombies::items::guns::%{_gun}%::item} with nbt {_nbt}
                             else:
                                 set slot {_loopvalue} of {_player} to {zombies::items::guns::%{_gun}%::clip} of {zombies::items::guns::%{_gun}%::item} with nbt {_nbt}
                         exit loop
                 if name of {_player}'s held item is name of {zombies::items::guns::%{_gun}%::item}:
-                    set level of {_player} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%}
-                    if {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} is bigger than 0:
+                    set level of {_player} to {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo}
+                    if {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo} is bigger than 0:
                         set level progress of {_player} to 0.99
                     else:
                         set level progress of {_player} to 0
-                set {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} to false
+                set {zombies::playerstats::%{_player}%::gun::%{_gun}%::reload} to false
             else:
                 send action bar "&cYou don't have any ammo left!" to {_player}
                 set level progress of {_player} to 0
@@ -114,12 +115,12 @@ function reload(gun: text, player: player):
 
 
 function shoot(gun: text, player: player, block: block, entity: entity):
-    if {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} is bigger than 0:
-        if {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} is not true:
-            if {zombies::playerstats::gun::%{_gun}%::firerate::%{_player}%} is not true:
+    if {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo} is bigger than 0:
+        if {zombies::playerstats::%{_player}%::gun::%{_gun}%::reload} is not true:
+            if {zombies::playerstats::%{_player}%::gun::%{_gun}%::firerate} is not true:
                 if {_gun} contains "shotgun":
                     loop {zombies::items::guns::%{_gun}%::burst} times:
-                        set {zombies::playerstats::gun::%{_gun}%::firerate::%{_player}%} to true
+                        set {zombies::playerstats::%{_player}%::gun::%{_gun}%::firerate} to true
                         send action bar "" to {_player}
                         set {_location} to location of {_player}'s head
                         set {_vector} to vector from yaw {_player}'s yaw and pitch {_player}'s pitch
@@ -156,15 +157,15 @@ function shoot(gun: text, player: player, block: block, entity: entity):
                         if number of {zombies::items::guns::%{_gun}%::item} in {_player}'s inventory is bigger than 1:
                             remove 1 of {zombies::items::guns::%{_gun}%::item} from {_player}'s inventory
                         else:
-                            if {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} is not true:
+                            if {zombies::playerstats::%{_player}%::gun::%{_gun}%::reload} is not true:
                                 reload({_gun}, {_player})
                         if name of {_player}'s tool is the name of {zombies::items::guns::%{_gun}%::item}:
-                            set {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} - 1
-                            set level of {_player} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%}
+                            set {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo} to {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo} - 1
+                            set level of {_player} to {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo}
 
                 else if {_gun} contains "launcher":
                     loop {zombies::items::guns::%{_gun}%::burst} times:
-                        set {zombies::playerstats::gun::%{_gun}%::firerate::%{_player}%} to true
+                        set {zombies::playerstats::%{_player}%::gun::%{_gun}%::firerate} to true
                         send action bar "" to {_player}
                         play sound {zombies::items::guns::%{_gun}%::sound} at volume 1 with pitch {zombies::items::guns::%{_gun}%::pitch} to {_player}
                         set level progress of {_player} to 0
@@ -172,18 +173,18 @@ function shoot(gun: text, player: player, block: block, entity: entity):
                         if number of {zombies::items::guns::%{_gun}%::item} in {_player}'s inventory is bigger than 1:
                             remove 1 of {zombies::items::guns::%{_gun}%::item} from {_player}'s inventory
                         else:
-                            if {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} is not true:
+                            if {zombies::playerstats::%{_player}%::gun::%{_gun}%::reload} is not true:
                                 reload({_gun}, {_player})
                         if name of {_player}'s tool is the name of {zombies::items::guns::%{_gun}%::item}:
-                            set {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} - 1
-                            set level of {_player} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%}
+                            set {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo} to {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo} - 1
+                            set level of {_player} to {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo}
                                 
 
 
                 else:
                     loop {zombies::items::guns::%{_gun}%::burst} times:
                         send action bar "" to {_player}
-                        set {zombies::playerstats::gun::%{_gun}%::firerate::%{_player}%} to true
+                        set {zombies::playerstats::%{_player}%::gun::%{_gun}%::firerate} to true
                         set {_location} to location of {_player}'s head
                         set {_vector} to vector from yaw {_player}'s yaw and pitch {_player}'s pitch
                         set vector length of {_vector} to 1 
@@ -296,30 +297,30 @@ function shoot(gun: text, player: player, block: block, entity: entity):
                         if number of {zombies::items::guns::%{_gun}%::item} in {_player}'s inventory is bigger than 1:
                             remove 1 of {zombies::items::guns::%{_gun}%::item} from {_player}'s inventory
                         else:
-                            if {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} is not true:
+                            if {zombies::playerstats::%{_player}%::gun::%{_gun}%::reload} is not true:
                                 reload({_gun}, {_player})
                         if name of {_player}'s tool is the name of {zombies::items::guns::%{_gun}%::item}:
-                            set {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} - 1
-                            set level of {_player} to {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%}
+                            set {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo} to {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo} - 1
+                            set level of {_player} to {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo}
 
                         wait "%{zombies::items::guns::%{_gun}%::burstcooldown}% seconds" parsed as a timespan
-                set {zombies::playerstats::gun::%{_gun}%::firecooldown::%{_player}%} to 0
+                set {zombies::playerstats::%{_player}%::gun::%{_gun}%::firecooldown} to 0
 
                 loop 20 times:
                     if {zombies::items::guns::%{_gun}%::firerate} / loop-value >= 0.05:
                         set {_num} to loop-value
 
                 loop {_num} times:
-                    set {zombies::playerstats::gun::%{_gun}%::firecooldown::%{_player}%} to {zombies::playerstats::gun::%{_gun}%::firecooldown::%{_player}%} + (0.99/{_num})
+                    set {zombies::playerstats::%{_player}%::gun::%{_gun}%::firecooldown} to {zombies::playerstats::%{_player}%::gun::%{_gun}%::firecooldown} + (0.99/{_num})
                     if name of {_player}'s held item is name of {zombies::items::guns::%{_gun}%::item}:
-                        if {zombies::playerstats::gun::%{_gun}%::ammo::%{_player}%} is bigger than 0:
-                            if {zombies::playerstats::gun::%{_gun}%::reload::%{_player}%} is not true:
-                                set level progress of {_player} to {zombies::playerstats::gun::%{_gun}%::firecooldown::%{_player}%}
+                        if {zombies::playerstats::%{_player}%::gun::%{_gun}%::ammo} is bigger than 0:
+                            if {zombies::playerstats::%{_player}%::gun::%{_gun}%::reload} is not true:
+                                set level progress of {_player} to {zombies::playerstats::%{_player}%::gun::%{_gun}%::firecooldown}
                         else:
                             reload({_gun}, {_player})
                     wait "%({zombies::items::guns::%{_gun}%::firerate}/{_num})+(0.05/{_num})% seconds" parsed as a timespan
-                set {zombies::playerstats::gun::%{_gun}%::firecooldown::%{_player}%} to 0
-                set {zombies::playerstats::gun::%{_gun}%::firerate::%{_player}%} to false
+                set {zombies::playerstats::%{_player}%::gun::%{_gun}%::firecooldown} to 0
+                set {zombies::playerstats::%{_player}%::gun::%{_gun}%::firerate} to false
     else:
         send action bar "&cYou don't have any ammo left!" to {_player}
         set level progress of {_player} to 0
@@ -337,14 +338,14 @@ on held item change:
                 apply infinite potion effect of slowness of tier 4 without particles to player
             else:
                 remove slowness from player
-            set level of player to {zombies::playerstats::gun::%loop-value%::ammo::%player%}
-            if {zombies::playerstats::gun::%loop-value%::ammo::%player%} is bigger than 0:
-                if {zombies::playerstats::gun::%loop-value%::reload::%player%} is not true:
-                    if {zombies::playerstats::gun::%loop-value%::firecooldown::%player%} is 0:
+            set level of player to {zombies::playerstats::%player%::gun::%loop-value%::ammo}
+            if {zombies::playerstats::%player%::gun::%loop-value%::ammo} is bigger than 0:
+                if {zombies::playerstats::%player%::gun::%loop-value%::reload} is not true:
+                    if {zombies::playerstats::%player%::gun::%loop-value%::firecooldown} is 0:
                         set level progress of player to 0.99
                         send action bar "" to player
                     else:
-                        set level progress of player to {zombies::playerstats::gun::%loop-value%::firecooldown::%player%}
+                        set level progress of player to {zombies::playerstats::%player%::gun::%loop-value%::firecooldown}
                         send action bar "" to player
                 else:
                     set level progress of player to 0.00
@@ -366,14 +367,14 @@ every second:
     loop all players:
         loop {zombies::lists::guns::*}:
             if name of loop-player's held item is name of {zombies::items::guns::%loop-value-2%::item}:
-                set level of loop-player to {zombies::playerstats::gun::%loop-value-2%::ammo::%loop-player%}
-                if {zombies::playerstats::gun::%loop-value-2%::ammo::%loop-player%} is bigger than 0:
-                    if {zombies::playerstats::gun::%loop-value-2%::reload::%loop-player%} is not true:
-                        if {zombies::playerstats::gun::%loop-value-2%::firecooldown::%loop-player%} is 0:
+                set level of loop-player to {zombies::playerstats::%loop-player%::gun::%loop-value-2%::ammo}
+                if {zombies::playerstats::%loop-player%::gun::%loop-value-2%::ammo} is bigger than 0:
+                    if {zombies::playerstats::%loop-player%::gun::%loop-value-2%::reload} is not true:
+                        if {zombies::playerstats::%loop-player%::gun::%loop-value-2%::firecooldown} is 0:
                             set level progress of loop-player to 0.99
                             send action bar "" to loop-player
                         else:
-                            set level progress of loop-player to {zombies::playerstats::gun::%loop-value-2%::firecooldown::%loop-player%}
+                            set level progress of loop-player to {zombies::playerstats::%loop-player%::gun::%loop-value-2%::firecooldown}
                             send action bar "" to loop-player
                     else:
                         set level progress of loop-player to 0.00
