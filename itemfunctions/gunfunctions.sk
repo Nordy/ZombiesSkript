@@ -51,7 +51,12 @@ function notglowing(p: player):
             loop all players:
                 wait 1 tick
                 if {zombies::glowlist::%{_p}%} is loop-entity-1:
-                    make loop-entity-1 glow light red for loop-player
+                    if name of loop-player's held item contains "sniper": 
+                        make loop-entity-1 glow light red for loop-player
+                    else:
+                        loop-entity-1.setGlowing(true)
+                        loop-entity-1.setGlowing(false)
+                        make loop-entity-1 not glow for loop-player
                 else:
                     loop-entity-1.setGlowing(true)
                     loop-entity-1.setGlowing(false)
@@ -329,7 +334,7 @@ on held item change:
     loop {zombies::lists::guns::*}:
         if name of player's held item is name of {zombies::items::guns::%loop-value%::item}:
             if name of player's held item contains "sniper":
-                apply potion of slowness 4 without particles to player for 999 days
+                apply infinite potion effect of slowness of tier 4 without particles to player
             else:
                 remove slowness from player
             set level of player to {zombies::playerstats::gun::%loop-value%::ammo::%player%}

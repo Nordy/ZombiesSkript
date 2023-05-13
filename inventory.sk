@@ -16,6 +16,8 @@ function obtainGun(p: player, g: text, s: number = -1):
                     if slot loop-value of {_p}'s inventory is {zombies::items::inventory::emptygun}:
                         set {_s} to loop-value
                         exit loop
+                if {_s} is -1:
+                    set {_s} to 0
         set slot {_s} of {_p} to {zombies::items::guns::%{_g}%::clip} of {zombies::items::guns::%{_g}%::item}
         set {zombies::playerstats::gun::%{_g}%::ammo::%{_p}%} to {zombies::items::guns::%{_g}%::ammo}
         set {zombies::playerstats::gun::%{_g}%::reload::%{_p}%} to false
@@ -44,11 +46,6 @@ function defaultInventory(p: player):
     obtainGun({_p}, "pistol")
 
 
-
-
-on right click:
-    send "%clicked entity%"
-
 on inventory click:
     if player's gamemode is survival:
         cancel event
@@ -56,6 +53,9 @@ on inventory click:
 on drop:
     if player's gamemode is survival:
         cancel event
+
+on death:
+    cancel drops of items
 
 command /defaultinv:
     trigger:

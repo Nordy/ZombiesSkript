@@ -23,7 +23,7 @@ function creategun(name: text, item: item, displayname: text, lore: texts, damag
     set {zombies::items::guns::%{_name}%::shotgun} to {_shotgun}
     set {zombies::items::guns::%{_name}%::burst} to {_burst}
     set {zombies::items::guns::%{_name}%::burstcooldown} to {_burstcooldown}
-    send "&a(!) Registered custom gun %{_name}%!" to console
+    send "&a[Zombies (&lGuns&a)] Registered custom gun %{_name}%!" to console
     add {_name} to {zombies::lists::guns::*}
 #rocket lanucher sound entity.generic.burn pitch 0
 on load:

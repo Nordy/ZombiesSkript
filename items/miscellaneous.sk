@@ -3,7 +3,7 @@ function createknife(name: text, item: item, displayname: text, lore: texts, dam
     set {zombies::items::misc::%{_name}%::item} to {_item} named {_displayname} with lore {_lore::*}, " ", "&7❤ Damage: &a%{_damage}% HP", "&7＄ Gold: &a%{_gold}%", " " and "&bLEFT CLICK &7to use." with attributes hidden
     set {zombies::items::misc::%{_name}%::damage} to {_damage}
     set {zombies::items::misc::%{_name}%::gold} to {_gold}
-    send "&a(!) Registered custom miscellaneous %{_name}%!" to console
+    send "&a[Zombies (&lMisc&a)] Registered custom miscellaneous %{_name}%!" to console
     add {_name} to {zombies::lists::misc::*}
 
 on load:

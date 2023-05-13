@@ -1,0 +1,51 @@
+function buyholo(id: text, display: text, item: item, cost: number, location: location):
+    delete the hologram with the id "buy-%{_id}%"
+    set {zombies::items::costs::guns::%{_id}%::cost} to {_cost}
+    create a hd hologram at {_location} with the id "buy-%{_id}%"
+    add the text line "&6&l&n%{_display}%" to the hologram with id "buy-%{_id}%"
+    add the text line "&7%{_cost}% Gold" to the hologram with id "buy-%{_id}%"
+    add the item {_item} to the hologram with id "buy-%{_id}%"
+    add the text line "" to the hologram with id "buy-%{_id}%"
+    loop 4 times:
+        make line loop-value of the hologram with id "buy-%{_id}%" clickable
+    send "&a[Zombies (&lHolos&a)] Registered custom hologram buy-%{_id}%!" to console
+
+
+function closedwinholo(id: text, level: number, location: location):
+    delete the hologram with the id "closedwin-%{_id}%"
+    create a hd hologram at {_location} with the id "closedwin-%{_id}%"
+    add the text line "&c&l&o&nCLOSED WINDOW" to the hologram with id "closedwin-%{_id}%"
+    add the text line "&7&l&oLEVEL %{_level}%" to the hologram with id "closedwin-%{_id}%"
+    send "&a[Zombies (&lHolos&a)] Registered custom hologram closedwin-%{_id}%!" to console
+
+on load:
+    buyholo("pistol", "Pistol", wooden hoe, 300, location(-45.5, 230.5, -108.5, world("world")))
+    buyholo("shotgun", "Shotgun", wooden pickaxe, 500, location(-45.5, 230.5, -97.5, world("world")))
+    buyholo("sniper", "Sniper", wooden shovel, 800, location(-3.5, 230.5, -98.5, world("world")))
+    buyholo("rifle", "Rifle", wooden axe, 200, location(-3.5, 230.5, -107.5, world("world")))
+    buyholo("sharpknife", "Sharp Knife", iron sword, 100, location(-19.5, 231.5, -86.5, world("world")))
+    buyholo("shield", "Shield", shield, 400, location(-29.5, 231.5, -86.5, world("world")))
+    closedwinholo("window1", 20, location(-3.5, 230.5, -104, world("world")))
+    closedwinholo("window2", 20, location(-45.5, 230.5, -105.5, world("world")))
+    closedwinholo("window3", 25, location(-24.5, 230.5, -90.5, world("world")))
+    
+    # purchaseholo("armor1", "Leather Armor", "ItemStack:leather helmet;ItemStack:leather chestplate", 500, location(-45.5, 231, -118.5, world("world")))
+
+on hd hologram click:
+    broadcast "%id of event-hologram%"
+
+
+command /holocoords:
+    trigger:
+        if {holocoord::%player%} is not true:
+            set {holocoord::%player%} to true
+            send "&aYep"
+        else:
+            set {holocoord::%player%} to false
+            send "&cNope"
+
+on break:
+    if {holocoord::%player%} is true:
+        cancel event
+        send "&b%event-block%"
+
