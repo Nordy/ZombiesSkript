@@ -1,14 +1,14 @@
-function buyholo(id: text, display: text, item: item, cost: number, location: location):
-    delete the hologram with the id "buy-%{_id}%"
+function buyitemholo(id: text, display: text, item: item, cost: number, location: location):
+    delete the hologram with the id "buyitem-%{_id}%"
     set {zombies::items::costs::guns::%{_id}%::cost} to {_cost}
-    create a hd hologram at {_location} with the id "buy-%{_id}%"
-    add the text line "&6&l&n%{_display}%" to the hologram with id "buy-%{_id}%"
-    add the text line "&7%{_cost}% Gold" to the hologram with id "buy-%{_id}%"
-    add the item {_item} to the hologram with id "buy-%{_id}%"
-    add the text line "" to the hologram with id "buy-%{_id}%"
+    create a hd hologram at {_location} with the id "buyitem-%{_id}%"
+    add the text line "&6&l&n%{_display}%" to the hologram with id "buyitem-%{_id}%"
+    add the text line "&7%{_cost}% Gold" to the hologram with id "buyitem-%{_id}%"
+    add the item {_item} to the hologram with id "buyitem-%{_id}%"
+    add the text line "" to the hologram with id "buyitem-%{_id}%"
     loop 4 times:
-        make line loop-value of the hologram with id "buy-%{_id}%" clickable
-    send "&a[Zombies (&lHolos&a)] Registered custom hologram buy-%{_id}%!" to console
+        make line loop-value of the hologram with id "buyitem-%{_id}%" clickable
+    send "&a[Zombies (&lHolos&a)] Registered custom hologram buyitem-%{_id}%!" to console
 
 
 function closedwinholo(id: text, level: number, location: location):
@@ -18,33 +18,82 @@ function closedwinholo(id: text, level: number, location: location):
     add the text line "&7&l&oLEVEL %{_level}%" to the hologram with id "closedwin-%{_id}%"
     send "&a[Zombies (&lHolos&a)] Registered custom hologram closedwin-%{_id}%!" to console
 
-on load:
-    buyholo("pistol", "Pistol", wooden hoe, 300, location(-45.5, 230.5, -108.5, world("world")))
-    buyholo("shotgun", "Shotgun", wooden pickaxe, 500, location(-45.5, 230.5, -97.5, world("world")))
-    buyholo("sniper", "Sniper", wooden shovel, 800, location(-3.5, 230.5, -98.5, world("world")))
-    buyholo("rifle", "Rifle", wooden axe, 200, location(-3.5, 230.5, -107.5, world("world")))
-    buyholo("sharpknife", "Sharp Knife", iron sword, 100, location(-19.5, 231.5, -86.5, world("world")))
-    buyholo("shield", "Shield", shield, 400, location(-29.5, 231.5, -86.5, world("world")))
+function buyareaholo(id: text, display: text, cost: number, location: location):
+    delete the hologram with the id "buyarea-%{_id}%"
+    create a hd hologram at {_location} with the id "buyarea-%{_id}%"
+    add the text line "&6&l&n&o%{_display}%" to the hologram with id "buyarea-%{_id}%"
+    add the text line "&7&l&o%{_cost}% Gold" to the hologram with id "buyarea-%{_id}%"
+    add the text line "" to the hologram with id "buyarea-%{_id}%"
+    loop 3 times:
+        make line loop-value of the hologram with id "buyarea-%{_id}%" clickable
+    send "&a[Zombies (&lHolos&a)] Registered custom hologram buyarea-%{_id}%!" to console
+#show hologram with id "" to player
+#hide the hologram with id "" from player
+function buyarmorholo(id: text, display: text, cost: number, type: string, material: string, location: location, invisible: boolean):
+    delete the hologram with the id "buyarmor-%{_id}%"
+    if {_invisible} is true:
+        create a hd hologram at {_location} with the id "buyarmor-%{_id}%" to be invisible by default
+    else:
+        create a hd hologram at {_location} with the id "buyarmor-%{_id}%"
+    add the text line "&6&l&n%{_display}%" to the hologram with id "buyarmor-%{_id}%"
+    if {_cost} is not -1:
+        add the text line "&7%{_cost}% Gold" to the hologram with id "buyarmor-%{_id}%"
+    else:
+        add the text line "&a&l&oYOU HAVE THIS ALREADY!" to the hologram with id "buyarmor-%{_id}%"
     
-    buyholo("tier2pistol", "Tier 2 Pistol", iron hoe, 500, location(-42.5, 230.5, -124.5, world("world")))
-    buyholo("tier2shotgun", "Tier 2 Shotgun", iron pickaxe, 700, location(-3.5, 230.5, -145.5, world("world")))
-    buyholo("tier2sniper", "Tier 2 Sniper", iron shovel, 1000, location(-6.5, 230.5, -124.5, world("world")))
-    buyholo("tier2rifle", "Tier 2 Rifle", iron axe, 400, location(-45.5, 230.5, -145.5, world("world")))
- 
-    buyholo("tier3pistol", "Tier 3 Pistol", diamond hoe, 700, location(-45.5, 230.5, -172.5, world("world")))
-    buyholo("tier3shotgun", "Tier 3 Shotgun", diamond pickaxe, 900, location(-6.5, 230.5, -175.5, world("world")))
-    buyholo("tier3sniper", "Tier 3 Sniper", diamond shovel, 1200, location(-3.5, 230.5, -172.5, world("world")))
-    buyholo("tier3rifle", "Tier 3 Rifle", diamond axe, 600, location(-42.5, 230.5, -175.5, world("world")))
+    if {_type} is "upper":
+        add the item ("%{_material}% helmet" parsed as itemtype) to the hologram with id "buyarmor-%{_id}%"
+        add the item ("%{_material}% chestplate" parsed as itemtype) to the hologram with id "buyarmor-%{_id}%"
 
-    buyholo("tier4pistol", "Tier 4 Pistol", netherite hoe, 900, location(-21.5, 230.5, -195.5, world("world")))
-    buyholo("tier4shotgun", "Tier 4 Shotgun", netherite pickaxe, 1100, location(-21.5, 230.5, -203.5, world("world")))
-    buyholo("tier4sniper", "Tier 4 Sniper", netherite shovel, 1400, location(-27.5, 230.5, -203.5, world("world")))
-    buyholo("tier4rifle", "Tier 4 Rifle", netherite axe, 800, location(-27.5, 230.5, -195.5, world("world")))
+    else if {_type} is "lower":
+        add the item ("%{_material}% leggings" parsed as itemtype) to the hologram with id "buyarmor-%{_id}%"
+        add the item ("%{_material}% boots" parsed as itemtype) to the hologram with id "buyarmor-%{_id}%"
+
+    add the text line "" to the hologram with id "buyarmor-%{_id}%"
+    loop 5 times:
+        make line loop-value of the hologram with id "buyarmor-%{_id}%" clickable
+
+on load:
+    buyitemholo("pistol", "Pistol", wooden hoe, 300, location(-45.5, 230.5, -108.5, world("world")))
+    buyitemholo("shotgun", "Shotgun", wooden pickaxe, 500, location(-45.5, 230.5, -97.5, world("world")))
+    buyitemholo("sniper", "Sniper", wooden shovel, 800, location(-3.5, 230.5, -98.5, world("world")))
+    buyitemholo("rifle", "Rifle", wooden axe, 200, location(-3.5, 230.5, -107.5, world("world")))
+    buyitemholo("sharpknife", "Sharp Knife", iron sword, 100, location(-19.5, 231.5, -86.5, world("world")))
+    buyitemholo("shield", "Shield", shield, 400, location(-29.5, 231.5, -86.5, world("world")))
     
+    buyitemholo("tier2pistol", "Tier 2 Pistol", iron hoe, 500, location(-42.5, 230.5, -124.5, world("world")))
+    buyitemholo("tier2shotgun", "Tier 2 Shotgun", iron pickaxe, 700, location(-3.5, 230.5, -145.5, world("world")))
+    buyitemholo("tier2sniper", "Tier 2 Sniper", iron shovel, 1000, location(-6.5, 230.5, -124.5, world("world")))
+    buyitemholo("tier2rifle", "Tier 2 Rifle", iron axe, 400, location(-45.5, 230.5, -145.5, world("world")))
+ 
+    buyitemholo("tier3pistol", "Tier 3 Pistol", diamond hoe, 700, location(-45.5, 230.5, -172.5, world("world")))
+    buyitemholo("tier3shotgun", "Tier 3 Shotgun", diamond pickaxe, 900, location(-6.5, 230.5, -175.5, world("world")))
+    buyitemholo("tier3sniper", "Tier 3 Sniper", diamond shovel, 1200, location(-3.5, 230.5, -172.5, world("world")))
+    buyitemholo("tier3rifle", "Tier 3 Rifle", diamond axe, 600, location(-42.5, 230.5, -175.5, world("world")))
+
+    buyitemholo("tier4pistol", "Tier 4 Pistol", netherite hoe, 900, location(-21.5, 230.5, -195.5, world("world")))
+    buyitemholo("tier4shotgun", "Tier 4 Shotgun", netherite pickaxe, 1100, location(-21.5, 230.5, -203.5, world("world")))
+    buyitemholo("tier4sniper", "Tier 4 Sniper", netherite shovel, 1400, location(-27.5, 230.5, -203.5, world("world")))
+    buyitemholo("tier4rifle", "Tier 4 Rifle", netherite axe, 800, location(-27.5, 230.5, -195.5, world("world")))
+    
+    buyareaholo("base", "The Base", 1000, location(-24.5, 231, -121.5, world("world")))
+
+    buyarmorholo("leatherupper", "Leather Helmet & Chestplate", 500, "upper", "leather", location(-45.5, 231, -118.5, world("world")), false)
+    buyarmorholo("leatherlower", "Leather Leggings & Boots", 500, "lower", "leather", location(-3.5, 231, -118.5, world("world")), false)
+    buyarmorholo("goldupper", "Gold Helmet & Chestplate", 1000, "upper", "gold", location(-45.5, 231, -118.5, world("world")), true)
+    buyarmorholo("goldlower", "Gold Leggings & Boots", 1000, "lower", "gold", location(-3.5, 231, -118.5, world("world")), true)
+    buyarmorholo("golduppercompleted", "Gold Helmet & Chestplate", -1, "upper", "gold", location(-45.5, 231, -118.5, world("world")), true)
+    buyarmorholo("goldlowercompleted", "Gold Leggings & Boots", -1, "lower", "gold", location(-3.5, 231, -118.5, world("world")), true)
+    buyarmorholo("ironupper", "Iron Helmet & Chestplate", 1500, "upper", "iron", location(-36.5, 231, -124.5, world("world")), false)
+    buyarmorholo("ironlower", "Iron Leggings & Boots", 1500, "lower", "iron", location(-12.5, 231, -124.5, world("world")), false)
+    buyarmorholo("ironuppercompleted", "Iron Helmet & Chestplate", -1, "upper", "iron", location(-36.5, 231, -124.5, world("world")), true)
+    buyarmorholo("ironlowercompleted", "Iron Leggings & Boots", -1, "lower", "iron", location(-12.5, 231, -124.5, world("world")), true)
+
     closedwinholo("window1", 20, location(-3.5, 230.5, -104, world("world")))
     closedwinholo("window2", 20, location(-45.5, 230.5, -105.5, world("world")))
     closedwinholo("window3", 25, location(-24.5, 230.5, -90.5, world("world")))
     
+
     # purchaseholo("armor1", "Leather Armor", "ItemStack:leather helmet;ItemStack:leather chestplate", 500, location(-45.5, 231, -118.5, world("world")))
 
 on hd hologram click:

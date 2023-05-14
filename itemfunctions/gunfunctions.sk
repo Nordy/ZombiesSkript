@@ -23,45 +23,38 @@ on ProjectileHitEvent:
             
                 
 on join:
-    clear {zombies::glowlist::%player%}
+    clear {zombies::playerstats::%player%::glow}
 
 function makeglowing(p: player, t: entity):
     if {_t} is a monster:
-        set {zombies::glowlist::%{_p}%} to {_t}  
+        set {zombies::playerstats::%{_p}%::glow} to {_t}  
         make {_t} glow light red for {_p}
 
 function cancelglowing(p: player, t: entity):
     if {_t} is a monster:
-        clear {zombies::glowlist::%{_p}%}
-        {_t}.setGlowing(true)
+        clear {zombies::playerstats::%{_p}%::glow}
         {_t}.setGlowing(false)
         make {_t} not glow for {_p}
         loop all players:
             if loop-player is not {_p}:
-                if {zombies::glowlist::%loop-player%} is {_t}:
-                    loop-entity-1.setGlowing(true)
-                    loop-entity-1.setGlowing(false)
+                if {zombies::playerstats::%loop-player%::glow} is {_t}:
                     wait 1 tick
                     make {_t} glow light red for loop-player
 
 function notglowing(p: player):
     loop all entities in radius 400 of {_p}:
         if loop-entity is a monster:
-            loop-entity.setGlowing(true)
-            loop-entity.setGlowing(false)
-            loop all players:
-                wait 1 tick
-                if {zombies::glowlist::%{_p}%} is loop-entity-1:
-                    if name of loop-player's held item contains "sniper": 
-                        make loop-entity-1 glow light red for loop-player
-                    else:
-                        loop-entity-1.setGlowing(true)
-                        loop-entity-1.setGlowing(false)
-                        make loop-entity-1 not glow for loop-player
+            if {zombies::playerstats::%{_p}%::glow} is loop-entity:
+                if name of {_p}'s held item contains "sniper":
+                    make loop-entity glow light red for {_p}
                 else:
-                    loop-entity-1.setGlowing(true)
-                    loop-entity-1.setGlowing(false)
-                    make loop-entity-1 not glow for loop-player
+                    loop-entity.setGlowing(false)
+                    make loop-entity not glow for {_p}
+                    send "%name of {_p}'s held item%" to {_p}
+            else:
+                loop-entity.setGlowing(false)
+                make loop-entity not glow for {_p}
+                send "%{zombies::playerstats::%{_p}%::glow}% , %loop-entity%" to {_p}
 
 function reload(gun: text, player: player):
     if {zombies::playerstats::%{_player}%::gun::%{_gun}%::reload} is not true:
@@ -389,23 +382,37 @@ every second:
                 set level progress of loop-player to 0
                 set level of loop-player to 0 
                 send action bar "" to loop-player
+        if name of loop-player's held item contains "sniper":
+            if target entity of loop-player is set:
+                if target entity of loop-player is {zombies::loop-playerstats::%loop-player%::glow}:
+                    makeglowing(loop-player, target entity of loop-player)
+                else:
+                    cancelglowing(loop-player, {zombies::loop-playerstats::%loop-player%::glow})
+                    set {zombies::loop-playerstats::%loop-player%::glow} to target entity of loop-player
+                    makeglowing(loop-player, {zombies::loop-playerstats::%loop-player%::glow})
+            else:
+                cancelglowing(loop-player, {zombies::loop-playerstats::%loop-player%::glow})
+                clear {zombies::loop-playerstats::%loop-player%::glow}
+        else:
+            cancelglowing(loop-player, {zombies::loop-playerstats::%loop-player%::glow})
+            clear {zombies::loop-playerstats::%loop-player%::glow}
         notglowing(loop-player)
 
 on any move:
     if name of player's held item contains "sniper":
         if target entity of player is set:
-            if target entity of player is {zombies::glowlist::%player%}:
+            if target entity of player is {zombies::playerstats::%player%::glow}:
                 makeglowing(player, target entity of player)
             else:
-                cancelglowing(player, {zombies::glowlist::%player%})
-                set {zombies::glowlist::%player%} to target entity of player
-                makeglowing(player, {zombies::glowlist::%player%})
+                cancelglowing(player, {zombies::playerstats::%player%::glow})
+                set {zombies::playerstats::%player%::glow} to target entity of player
+                makeglowing(player, {zombies::playerstats::%player%::glow})
         else:
-            cancelglowing(player, {zombies::glowlist::%player%})
-            clear {zombies::glowlist::%player%}
+            cancelglowing(player, {zombies::playerstats::%player%::glow})
+            clear {zombies::playerstats::%player%::glow}
     else:
-        cancelglowing(player, {zombies::glowlist::%player%})
-        clear {zombies::glowlist::%player%}
+        cancelglowing(player, {zombies::playerstats::%player%::glow})
+        clear {zombies::playerstats::%player%::glow}
         
             
     
