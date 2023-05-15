@@ -8,9 +8,13 @@ function createknife(name: text, item: item, displayname: text, lore: texts, dam
 
 on load:
     clear {zombies::lists::misc::*}  
+    set {zombies::items::misc::totem::item} to totem of undying named "&9&lTotem of Undying" with lore "&7Gives you another chance at living when you die." with attributes hidden
+    set {zombies::items::misc::shield::item} to shield named "&9&lShield" with lore "&7Protects you from incoming attacks." with attributes hidden
+    add "totem" to {zombies::lists::misc::*}
+    add "shield" to {zombies::lists::misc::*}
     createknife("knife", stone sword, "&9&lKnife", "&7Please don't use this.", 4, 4)
     createknife("sharpknife", iron sword, "&9&lSharp Knife", "&7Please don't use this too.", 7, 6)
-    createknife("superknife", diamond sword, "&9&lUltimate Sharp Knife", "&7You mgiht use this.", 10, 8)
+    createknife("superknife", netherite sword, "&9&lSuper Knife", "&7You might use this.", 10, 8)
 
 command /getmisc [<text>]:
     trigger:

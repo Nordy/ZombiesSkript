@@ -19,6 +19,7 @@ function closedwinholo(id: text, level: number, location: location):
     send "&a[Zombies (&lHolos&a)] Registered custom hologram closedwin-%{_id}%!" to console
 
 function buyareaholo(id: text, display: text, cost: number, location: location):
+    set {zombies::items::costs::areas::%{_id}%::cost} to {_cost}
     delete the hologram with the id "buyarea-%{_id}%"
     create a hd hologram at {_location} with the id "buyarea-%{_id}%"
     add the text line "&6&l&n&o%{_display}%" to the hologram with id "buyarea-%{_id}%"
@@ -30,6 +31,7 @@ function buyareaholo(id: text, display: text, cost: number, location: location):
 #show hologram with id "" to player
 #hide the hologram with id "" from player
 function buyarmorholo(id: text, display: text, cost: number, type: string, material: string, location: location, invisible: boolean):
+    set {zombies::items::costs::armors::%{_id}%::cost} to {_cost}
     delete the hologram with the id "buyarmor-%{_id}%"
     if {_invisible} is true:
         create a hd hologram at {_location} with the id "buyarmor-%{_id}%" to be invisible by default
@@ -53,6 +55,34 @@ function buyarmorholo(id: text, display: text, cost: number, type: string, mater
     loop 5 times:
         make line loop-value of the hologram with id "buyarmor-%{_id}%" clickable
 
+function buyperkholo(id: text, display: text, item: item, cost: number, location: location, rotation: number):
+    delete the hologram with the id "buyperk-%{_id}%"
+    kill {zombies::armorstands::perks::%{_id}%}
+    set {zombies::items::costs::perks::%{_id}%::cost} to {_cost}
+    if {_rotation} is 0:
+        set {_location2} to location(x-coordinate of {_location}, y-coordinate of {_location}-3, z-coordinate of {_location}+0.3)
+    else if {_rotation} is 90:
+        set {_location2} to location(x-coordinate of {_location}+0.3, y-coordinate of {_location}-3, z-coordinate of {_location})
+    else if {_rotation} is 180:
+        set {_location} to location(x-coordinate of {_location}, y-coordinate of {_location}-3, z-coordinate of {_location}-0.3)
+    else if {_rotation} is -90:
+        set {_location} to location(x-coordinate of {_location}-0.3, y-coordinate of {_location}-3, z-coordinate of {_location})
+    else:
+        set {_location2} to {_location}
+    spawn armor stand at {_location2} with nbt from "{NoGravity:1b,Invisible:1b,Invulnerable:1b,DisabledSlots:2039583,Rotation:[%{_rotation}%f,0f]}"
+    set {zombies::armorstands::perks::%{_id}%} to last spawned armor stand
+    set name of {zombies::armorstands::perks::%{_id}%} to "buyperk-%{_id}%"
+    set {zombies::armorstands::perks::%{_id}%}'s helmet to {_item}
+    create a hd hologram at {_location} with the id "buyperk-%{_id}%"
+    add the text line "&6&l&n%{_display}%" to the hologram with id "buyperk-%{_id}%"
+    add the text line "&7%{_cost}% Gold" to the hologram with id "buyperk-%{_id}%"
+    add the text line "" to the hologram with id "buyperk-%{_id}%"
+    add the text line "" to the hologram with id "buyperk-%{_id}%"
+    add the text line "" to the hologram with id "buyperk-%{_id}%"
+    loop 5 times:
+        make line loop-value of the hologram with id "buyperk-%{_id}%" clickable
+
+
 on load:
     buyitemholo("pistol", "Pistol", wooden hoe, 300, location(-45.5, 230.5, -108.5, world("world")))
     buyitemholo("shotgun", "Shotgun", wooden pickaxe, 500, location(-45.5, 230.5, -97.5, world("world")))
@@ -75,7 +105,14 @@ on load:
     buyitemholo("tier4shotgun", "Tier 4 Shotgun", netherite pickaxe, 1100, location(-21.5, 230.5, -203.5, world("world")))
     buyitemholo("tier4sniper", "Tier 4 Sniper", netherite shovel, 1400, location(-27.5, 230.5, -203.5, world("world")))
     buyitemholo("tier4rifle", "Tier 4 Rifle", netherite axe, 800, location(-27.5, 230.5, -195.5, world("world")))
-    
+    buyitemholo("superknife", "Super Knife", netherite sword, 2000, location(-27.5, 230.5, -211.5, world("world")))
+    buyitemholo("totem", "Totem of Undying", totem of undying, 1000, location(-21.5, 230.5, -211.5, world("world")))
+
+    buyperkholo("fastrevive", "Fast Revive", cookie, 500, location(-30.5, 230.5, -124.5, world("world")), 0)
+    buyperkholo("speed", "Speed", sugar, 300, location(-18.5, 230.5, -124.5, world("world")), 0)
+    buyperkholo("frozenbullets", "Frozen Bullets", snowball, 800, location(-30.5, 230.5, -175.5, world("world")), 0)
+    buyperkholo("firebullets", "Fire Bullets", blaze powder, 500, location(-18.5, 230.5, -175.5, world("world")), 0)
+
     buyareaholo("base", "The Base", 1000, location(-24.5, 231, -121.5, world("world")))
 
     buyarmorholo("leatherupper", "Leather Helmet & Chestplate", 500, "upper", "leather", location(-45.5, 231, -118.5, world("world")), false)
@@ -88,6 +125,14 @@ on load:
     buyarmorholo("ironlower", "Iron Leggings & Boots", 1500, "lower", "iron", location(-12.5, 231, -124.5, world("world")), false)
     buyarmorholo("ironuppercompleted", "Iron Helmet & Chestplate", -1, "upper", "iron", location(-36.5, 231, -124.5, world("world")), true)
     buyarmorholo("ironlowercompleted", "Iron Leggings & Boots", -1, "lower", "iron", location(-12.5, 231, -124.5, world("world")), true)
+    buyarmorholo("diamondupper", "Diamond Helmet & Chestplate", 2000, "upper", "diamond", location(-36.5, 231, -175.5, world("world")), false)
+    buyarmorholo("diamondlower", "Diamond Leggings & Boots", 2000, "lower", "diamond", location(-12.5, 231, -175.5, world("world")), false)
+    buyarmorholo("diamonduppercompleted", "Diamond Helmet & Chestplate", -1, "upper", "diamond", location(-36.5, 231, -175.5, world("world")), true)
+    buyarmorholo("diamondlowercompleted", "Diamond Leggings & Boots", -1, "lower", "diamond", location(-12.5, 231, -175.5, world("world")), true)
+    buyarmorholo("netheriteupper", "Netherite Helmet & Chestplate", 2500, "upper", "netherite", location(-21.5, 231, -187.5, world("world")), false)
+    buyarmorholo("netheritelower", "Netherite Leggings & Boots", 2500, "lower", "netherite", location(-27.5, 231, -187.5, world("world")), false)
+    buyarmorholo("netheriteuppercompleted", "Netherite Helmet & Chestplate", -1, "upper", "netherite", location(-21.5, 231, -187.5, world("world")), true)
+    buyarmorholo("netheritelowercompleted", "Netherite Leggings & Boots", -1, "lower", "netherite", location(-27.5, 231, -187.5, world("world")), true)
 
     closedwinholo("window1", 20, location(-3.5, 230.5, -104, world("world")))
     closedwinholo("window2", 20, location(-45.5, 230.5, -105.5, world("world")))
@@ -98,6 +143,9 @@ on load:
 
 on hd hologram click:
     broadcast "%id of event-hologram%"
+
+on click on armor stand:
+    broadcast "%name of event-entity%"
 
 command /holocoords:
     trigger:
