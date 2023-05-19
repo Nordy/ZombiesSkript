@@ -142,10 +142,7 @@ on join:
 
 on hd hologram click:
     broadcast "%id of event-hologram%"
-
-on click on armor stand:
-    broadcast "%name of event-entity%"
-
+    
 command /holocoords:
     trigger:
         if {holocoord::%player%} is not true:
