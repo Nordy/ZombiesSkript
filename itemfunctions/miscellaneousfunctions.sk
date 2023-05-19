@@ -3,23 +3,24 @@ on join:
 
 on damage:
     if attacker is a player:
-        cancel event
-        if victim is a monster:
-            if name of attacker's held item contains "knife":
-                loop {zombies::lists::misc::*}:
-                    if name of attacker's held item is name of {zombies::items::misc::%loop-value%::item}:
-                        play sound "entity.player.attack.sweep" at volume 1 with pitch 0 to attacker
-                        if attack cooldown of attacker is bigger than 0.8:
-                            damage victim by {zombies::items::misc::%loop-value%::damage}
-                            play sound "item.axe.scrape" at volume 1 with pitch 0 to attacker
-                            send "&6+%{zombies::items::misc::%loop-value%::gold}% Gold" to attacker
-                            exit loop
-                        else:
-                            damage victim by 0.2
+        if attacker's gamemode is not creative:
+            cancel event
+            if victim is a monster:
+                if name of attacker's held item contains "knife":
+                    loop {zombies::lists::misc::*}:
+                        if name of attacker's held item is name of {zombies::items::misc::%loop-value%::item}:
+                            play sound "entity.player.attack.sweep" at volume 1 with pitch 0 to attacker
+                            if attack cooldown of attacker is bigger than 0.8:
+                                damage victim by {zombies::items::misc::%loop-value%::damage}
+                                play sound "item.axe.scrape" at volume 1 with pitch 0 to attacker
+                                send "&6+%{zombies::items::misc::%loop-value%::gold}% Gold" to attacker
+                                exit loop
+                            else:
+                                damage victim by 0.2
+                else:
+                    damage victim by 0.01
             else:
-                damage victim by 0.01
-        else:
-            play sound "entity.player.attack.sweep" at volume 1 with pitch 0.4 to attacker
+                play sound "entity.player.attack.sweep" at volume 1 with pitch 0.4 to attacker
 on left click:
     loop {zombies::lists::misc::*}:
         if name of player's held item is name of {zombies::items::misc::%loop-value%::item}:   

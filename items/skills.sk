@@ -1,0 +1,11 @@
+function createskill(name: text, item: item, displayname: text, lore: texts, cooldown: number):
+    set {zombies::items::skills::%{_name}%::item} to unbreakable glowing {_item} named "&e&l%{_displayname}%" with lore {_lore}, " ", "&7⌛ Cooldown: &a%{_cooldown}%s" with attributes hidden
+    set {zombies::items::skills::%{_name}%::cooldown} to {_cooldown}
+    send "&a[Zombies (&lSkills&a)] Registered custom skill &e%{_name}%&a!" to console
+    add {_name} to {zombies::lists::skills::*}
+
+on load:
+    clear {zombies::lists::skills::*}
+    createskill("heal", golden apple, "Heal Skill", "&7Heals you and teamates you click on", 30)
+    createskill("lightning", blaze rod, "Lighting Skill", "&7StRiKe your enemies", 30)
+    createskill("pushing", sugar, "Pushing Skill", "&7Push enemies", 30)

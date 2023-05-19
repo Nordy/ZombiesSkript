@@ -1,0 +1,69 @@
+#TODO open animation in lucky chest
+#todo maybe bingo?
+
+function createluckychest():
+    set {zombies::lists::luckychest::*} to {zombies::items::guns::sigmasniper::item}, {zombies::items::guns::zombiezapper::item}, {zombies::items::guns::rainbowrifle::item}, {zombies::items::guns::powerpistol::item}, {zombies::items::misc::butterknife::item}, {zombies::items::guns::doublebarrelshotgun::item}, {zombies::items::guns::rocketlauncher::item}
+    delete the hologram with id "shop-luckychest"
+    create a hd hologram at location(-3.5, 231, -134, world("world")) with the id "shop-luckychest"
+    loop 4 times:
+        kill {zombies::armorstands::luckychest::goldblocks::%loop-value%1}
+        kill {zombies::armorstands::luckychest::goldblocks::%loop-value%2}
+    kill {zombies::armorstands::luckychest::item}
+    clear {zombies::armorstands::luckychest::item}
+
+    add the text line "&6&l&nLucky Chest" to the hologram with id "shop-luckychest" 
+    add the text line "&71000 Gold" to the hologram with id "shop-luckychest"
+    loop 5 times:
+        add the text line "" to the hologram with id "shop-luckychest"
+    loop 7 times:
+        make line loop-value of the hologram with id "shop-luckychest" clickable
+    set block at location(-3.5, 228.5, -134.5, world("world"), 90.0, -0.0) to chest[type=right,facing=west]
+    set block at location(-3.5, 228.5, -133.5, world("world"), 90.0, -0.0) to chest[type=left,facing=west]
+    set {_z} to -133.32
+    loop 4 times:
+        spawn armor stand at location(-3.717, 227.6, {_z}, world("world"), 90.0, -0.0)  with nbt from "{NoGravity:1b,Invisible:1b,Invulnerable:1b,Small:1b,DisabledSlots:2039583}"
+        set {zombies::armorstands::luckychest::goldblocks::%loop-value%1} to last spawned armor stand
+        spawn armor stand at location(-3.2815, 227.6, {_z}, world("world"), 90.0, -0.0)  with nbt from "{NoGravity:1b,Invisible:1b,Invulnerable:1b,Small:1b,DisabledSlots:2039583}"
+        set {zombies::armorstands::luckychest::goldblocks::%loop-value%2} to last spawned armor stand
+        set {zombies::armorstands::luckychest::goldblocks::%loop-value%1}'s helmet to gold block
+        set {zombies::armorstands::luckychest::goldblocks::%loop-value%2}'s helmet to gold block
+        set {_z} to {_z} - 0.45
+    spawn armor stand at location(-2.655,  227.31571, -134.512, world("world")) with nbt from "{Pose:{Body:[0f,0f,0f],RightArm:[0f,0f,90f]},NoGravity:1b,Invincible:1b,Invisible:1b,DisabledSlots:2039583}"
+    set {zombies::armorstands::luckychest::item} to last spawned armor stand
+    set {zombies::armorstands::luckychest::item}'s held item to diamond sword
+    
+on load:
+    createluckychest()
+
+on right click:
+    if location(-3.5, 228.5, -134.5, world("world"), 90.0, -0.0) is location at event-block:
+        cancel event
+        luckychest(player)
+    else if location(-3.5, 228.5, -133.5, world("world"), 90.0, -0.0) is location at event-block:
+        cancel event
+        luckychest(player)
+
+on hd hologram click:
+    if id of event-hologram is "shop-luckychest":
+        luckychest(player)
+
+function luckychest(p: player):
+    send "&6&l&nLucky Chest" to {_p}
+    play open animation on block at location(-3.5, 228.5, -134.5, world("world"), 90.0, -0.0)
+    wait 2 seconds 
+    loop 15 times:
+        teleport {zombies::armorstands::luckychest::item} 0.05 blocks above {zombies::armorstands::luckychest::item}'s location
+        loop 4 times:
+            teleport {zombies::armorstands::luckychest::goldblocks::%loop-value-2%1} 0.05 blocks above {zombies::armorstands::luckychest::goldblocks::%loop-value-2%1}'s location
+            teleport {zombies::armorstands::luckychest::goldblocks::%loop-value-2%2} 0.05 blocks above {zombies::armorstands::luckychest::goldblocks::%loop-value-2%2}'s location
+        wait 0.1 seconds
+    wait 2 seconds
+    play close animation on block at location(-3.5, 228.5, -134.5, world("world"), 90.0, -0.0)
+
+
+
+on server stop:
+    kill {zombies::armorstands::luckychest::item}
+    loop 4 times:
+        kill {zombies::armorstands::luckychest::goldblocks::%loop-value%1}
+        kill {zombies::armorstands::luckychest::goldblocks::%loop-value%2}

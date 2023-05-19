@@ -10,7 +10,6 @@ function buyitemholo(id: text, display: text, item: item, cost: number, location
     loop 4 times:
         make line loop-value of the hologram with id "buyitem%{_type}%-%{_id}%" clickable
     send "&a[Zombies (&lHolos&a)] Registered custom hologram buyitem%{_type}%-%{_id}%!" to console
-    #if {_cost} is -1:
 
 
 function closedwinholo(id: text, level: number, location: location):
@@ -36,16 +35,16 @@ function buyareaholo(id: text, display: text, cost: number, location: location):
 
 function buyarmorholo(id: text, display: text, cost: number, type: string, material: string, location: location, invisible: boolean, rotation: number):
     delete the hologram with the id "buyarmor-%{_id}%"
-    kill {zombies::items::armorstands::armors::buyarmor-%{_id}%}
+    kill {zombies::armorstands::armors::buyarmor-%{_id}%}
     set {zombies::items::costs::armors::%{_id}%::cost} to {_cost}
     spawn armor stand 1.7 blocks under {_location} with nbt from "{NoGravity:1b,Invisible:1b,Invulnerable:1b,Small:1b,DisabledSlots:2039583,Rotation:[%{_rotation}%f,0f]}"
-    clear {zombies::items::armorstands::armorshide::%{_id}%::*}
-    set {zombies::items::armorstands::armors::buyarmor-%{_id}%} to last spawned armor stand
-    set {zombies::items::armorstands::armors::buyarmor-%{_id}%}'s name to "buyarmor-%{_id}%"
+    clear {zombies::armorstands::armorshide::%{_id}%::*}
+    set {zombies::armorstands::armors::buyarmor-%{_id}%} to last spawned armor stand
+    set {zombies::armorstands::armors::buyarmor-%{_id}%}'s name to "buyarmor-%{_id}%"
     if {_invisible} is true:
         create a hd hologram at {_location} with the id "buyarmor-%{_id}%" to be invisible by default
-        add "buyarmor-%{_id}%" to {zombies::items::armorstands::invislist::*}
-        skjade hide {zombies::items::armorstands::armors::buyarmor-%{_id}%} from all players
+        add "buyarmor-%{_id}%" to {zombies::armorstands::invislist::*}
+        skjade hide {zombies::armorstands::armors::buyarmor-%{_id}%} from all players
     else:
         create a hd hologram at {_location} with the id "buyarmor-%{_id}%"
     add the text line "&6&l&n%{_display}%" to the hologram with id "buyarmor-%{_id}%"
@@ -55,13 +54,13 @@ function buyarmorholo(id: text, display: text, cost: number, type: string, mater
         add the text line "&a&l&oYOU HAVE THIS ALREADY!" to the hologram with id "buyarmor-%{_id}%"
     
     if {_type} is "upper":
-        set {zombies::items::armorstands::armors::buyarmor-%{_id}%}'s helmet to ("%{_material}% helmet" parsed as itemtype)
-        set {zombies::items::armorstands::armors::buyarmor-%{_id}%}'s chestplate to ("%{_material}% chestplate" parsed as itemtype)
+        set {zombies::armorstands::armors::buyarmor-%{_id}%}'s helmet to ("%{_material}% helmet" parsed as itemtype)
+        set {zombies::armorstands::armors::buyarmor-%{_id}%}'s chestplate to ("%{_material}% chestplate" parsed as itemtype)
 
     else if {_type} is "lower":
-        set {zombies::items::armorstands::armors::buyarmor-%{_id}%}'s leggings to ("%{_material}% leggings" parsed as itemtype)
-        set {zombies::items::armorstands::armors::buyarmor-%{_id}%}'s boots to ("%{_material}% boots" parsed as itemtype)
-        teleport {zombies::items::armorstands::armors::buyarmor-%{_id}%} 0.5 blocks above {zombies::items::armorstands::armors::buyarmor-%{_id}%}'s location
+        set {zombies::armorstands::armors::buyarmor-%{_id}%}'s leggings to ("%{_material}% leggings" parsed as itemtype)
+        set {zombies::armorstands::armors::buyarmor-%{_id}%}'s boots to ("%{_material}% boots" parsed as itemtype)
+        teleport {zombies::armorstands::armors::buyarmor-%{_id}%} 0.5 blocks above {zombies::armorstands::armors::buyarmor-%{_id}%}'s location
     loop 3 times:
         add the text line "" to the hologram with id "buyarmor-%{_id}%"
     loop 5 times:
@@ -69,43 +68,45 @@ function buyarmorholo(id: text, display: text, cost: number, type: string, mater
     send "&a[Zombies (&lHolos&a)] Registered custom hologram buyarmor-%{_id}%!" to console
 
 on server stop:
-    loop {zombies::items::armorstands::armors::*}:
+    loop {zombies::armorstands::armors::*}:
         kill loop-value
     delete all skjade holograms
 
 
 on load:
-    clear {zombies::items::armorstands::invislist::*}
+    clear {zombies::armorstands::invislist::*}
     buyitemholo("pistol", "Pistol", wooden hoe, 300, location(-45.5, 230.5, -108.5, world("world")), "gun")
     buyitemholo("shotgun", "Shotgun", wooden pickaxe, 500, location(-45.5, 230.5, -97.5, world("world")), "gun")
-    buyitemholo("sniper", "Sniper", wooden shovel, 800, location(-3.5, 230.5, -98.5, world("world")), "gun")
-    buyitemholo("rifle", "Rifle", wooden axe, 200, location(-3.5, 230.5, -107.5, world("world")), "gun")
+    buyitemholo("sniper", "Sniper", wooden shovel, 700, location(-3.5, 230.5, -98.5, world("world")), "gun")
+    buyitemholo("rifle", "Rifle", wooden axe, 400, location(-3.5, 230.5, -107.5, world("world")), "gun")
     buyitemholo("sharpknife", "Sharp Knife", iron sword, 100, location(-19.5, 231.5, -86.5, world("world")), "misc")
-    buyitemholo("shield", "Shield", shield, 400, location(-29.5, 231.5, -86.5, world("world")), "misc")
+    buyitemholo("shield", "Shield", shield, 500, location(-29.5, 231.5, -86.5, world("world")), "misc")
     
     buyitemholo("tier2pistol", "Tier 2 Pistol", iron hoe, 500, location(-42.5, 230.5, -124.5, world("world")), "gun")
     buyitemholo("tier2shotgun", "Tier 2 Shotgun", iron pickaxe, 700, location(-3.5, 230.5, -145.5, world("world")), "gun")
-    buyitemholo("tier2sniper", "Tier 2 Sniper", iron shovel, 1000, location(-6.5, 230.5, -124.5, world("world")), "gun")
-    buyitemholo("tier2rifle", "Tier 2 Rifle", iron axe, 400, location(-45.5, 230.5, -145.5, world("world")), "gun")
+    buyitemholo("tier2sniper", "Tier 2 Sniper", iron shovel, 900, location(-6.5, 230.5, -124.5, world("world")), "gun")
+    buyitemholo("tier2rifle", "Tier 2 Rifle", iron axe, 600, location(-45.5, 230.5, -145.5, world("world")), "gun")
  
     buyitemholo("tier3pistol", "Tier 3 Pistol", diamond hoe, 700, location(-45.5, 230.5, -172.5, world("world")), "gun")
     buyitemholo("tier3shotgun", "Tier 3 Shotgun", diamond pickaxe, 900, location(-6.5, 230.5, -175.5, world("world")), "gun")
-    buyitemholo("tier3sniper", "Tier 3 Sniper", diamond shovel, 1200, location(-3.5, 230.5, -172.5, world("world")), "gun")
-    buyitemholo("tier3rifle", "Tier 3 Rifle", diamond axe, 600, location(-42.5, 230.5, -175.5, world("world")), "gun")
+    buyitemholo("tier3sniper", "Tier 3 Sniper", diamond shovel, 1100, location(-3.5, 230.5, -172.5, world("world")), "gun")
+    buyitemholo("tier3rifle", "Tier 3 Rifle", diamond axe, 800, location(-42.5, 230.5, -175.5, world("world")), "gun")
 
     buyitemholo("tier4pistol", "Tier 4 Pistol", netherite hoe, 900, location(-21.5, 230.5, -195.5, world("world")), "gun")
     buyitemholo("tier4shotgun", "Tier 4 Shotgun", netherite pickaxe, 1100, location(-21.5, 230.5, -203.5, world("world")), "gun")
-    buyitemholo("tier4sniper", "Tier 4 Sniper", netherite shovel, 1400, location(-27.5, 230.5, -203.5, world("world")), "gun")
-    buyitemholo("tier4rifle", "Tier 4 Rifle", netherite axe, 800, location(-27.5, 230.5, -195.5, world("world")), "gun")
+    buyitemholo("tier4sniper", "Tier 4 Sniper", netherite shovel, 1300, location(-27.5, 230.5, -203.5, world("world")), "gun")
+    buyitemholo("tier4rifle", "Tier 4 Rifle", netherite axe, 1000, location(-27.5, 230.5, -195.5, world("world")), "gun")
     buyitemholo("superknife", "Super Knife", netherite sword, 2000, location(-27.5, 230.5, -211.5, world("world")), "misc")
-    buyitemholo("totem", "Totem of Undying", totem of undying, 1000, location(-21.5, 230.5, -211.5, world("world")), "misc")
+    buyitemholo("totem", "Totem of Undying", totem of undying, 1500, location(-21.5, 230.5, -211.5, world("world")), "misc")
 
     buyitemholo("fastrevive", "Fast Revive", cookie, 500, location(-30.5, 230.5, -124.5, world("world")), "perk")
-    buyitemholo("speed", "Speed", sugar, 300, location(-18.5, 230.5, -124.5, world("world")), "perk")
+    buyitemholo("speed", "Speed", sugar, 400, location(-18.5, 230.5, -124.5, world("world")), "perk")
     buyitemholo("frozenbullets", "Frozen Bullets", snowball, 800, location(-30.5, 230.5, -175.5, world("world")), "perk")
-    buyitemholo("firebullets", "Fire Bullets", blaze powder, 500, location(-18.5, 230.5, -175.5, world("world")), "perk")
+    buyitemholo("firebullets", "Fire Bullets", blaze powder, 600, location(-18.5, 230.5, -175.5, world("world")), "perk")
 
     buyareaholo("base", "The Base", 1000, location(-24.5, 231, -121.5, world("world")))
+    buyareaholo("arena", "The Arena", 3000, location(-24.5, 230.5, -149.5, world("world")))
+    buyareaholo("vault", "The Vault", 5000, location(-24.5, 230.5, -176.5, world("world")))
 
     buyarmorholo("leatherupper", "Leather Helmet & Chestplate", 500, "upper", "leather", location(-45.5, 230.5, -118.5, world("world")), false, -90)
     buyarmorholo("leatherlower", "Leather Leggings & Boots", 500, "lower", "leather", location(-3.5, 230.5, -118.5, world("world")), false, 90)
@@ -113,16 +114,16 @@ on load:
     buyarmorholo("goldlower", "Gold Leggings & Boots", 1000, "lower", "gold", location(-3.5, 230.5, -118.5, world("world")), true, 90)
     buyarmorholo("golduppercompleted", "Gold Helmet & Chestplate", -1, "upper", "gold", location(-45.5, 230.5, -118.5, world("world")), true, -90)
     buyarmorholo("goldlowercompleted", "Gold Leggings & Boots", -1, "lower", "gold", location(-3.5, 230.5, -118.5, world("world")), true, 90)
-    buyarmorholo("ironupper", "Iron Helmet & Chestplate", 1500, "upper", "iron", location(-36.5, 230.5, -124.5, world("world")), false, 180)
-    buyarmorholo("ironlower", "Iron Leggings & Boots", 1500, "lower", "iron", location(-12.5, 230.5, -124.5, world("world")), false, 180)
+    buyarmorholo("ironupper", "Iron Helmet & Chestplate", 2000, "upper", "iron", location(-36.5, 230.5, -124.5, world("world")), false, 180)
+    buyarmorholo("ironlower", "Iron Leggings & Boots", 2000, "lower", "iron", location(-12.5, 230.5, -124.5, world("world")), false, 180)
     buyarmorholo("ironuppercompleted", "Iron Helmet & Chestplate", -1, "upper", "iron", location(-36.5, 230.5, -124.5, world("world")), true, 180)
     buyarmorholo("ironlowercompleted", "Iron Leggings & Boots", -1, "lower", "iron", location(-12.5, 230.5, -124.5, world("world")), true, 180)
-    buyarmorholo("diamondupper", "Diamond Helmet & Chestplate", 2000, "upper", "diamond", location(-36.5, 230.5, -175.5, world("world")), false, 0)
-    buyarmorholo("diamondlower", "Diamond Leggings & Boots", 2000, "lower", "diamond", location(-12.5, 230.5, -175.5, world("world")), false, 0)
+    buyarmorholo("diamondupper", "Diamond Helmet & Chestplate", 5000, "upper", "diamond", location(-36.5, 230.5, -175.5, world("world")), false, 0)
+    buyarmorholo("diamondlower", "Diamond Leggings & Boots", 5000, "lower", "diamond", location(-12.5, 230.5, -175.5, world("world")), false, 0)
     buyarmorholo("diamonduppercompleted", "Diamond Helmet & Chestplate", -1, "upper", "diamond", location(-36.5, 230.5, -175.5, world("world")), true, 0)
     buyarmorholo("diamondlowercompleted", "Diamond Leggings & Boots", -1, "lower", "diamond", location(-12.5, 230.5, -175.5, world("world")), true, 0)
-    buyarmorholo("netheriteupper", "Netherite Helmet & Chestplate", 2500, "upper", "netherite", location(-21.5, 230.5, -187.5, world("world")), false, 90)
-    buyarmorholo("netheritelower", "Netherite Leggings & Boots", 2500, "lower", "netherite", location(-27.5, 230.5, -187.5, world("world")), false, -90)
+    buyarmorholo("netheriteupper", "Netherite Helmet & Chestplate", 10000, "upper", "netherite", location(-21.5, 230.5, -187.5, world("world")), false, 90)
+    buyarmorholo("netheritelower", "Netherite Leggings & Boots", 10000, "lower", "netherite", location(-27.5, 230.5, -187.5, world("world")), false, -90)
     buyarmorholo("netheriteuppercompleted", "Netherite Helmet & Chestplate", -1, "upper", "netherite", location(-21.5, 230.5, -187.5, world("world")), true, 90)
     buyarmorholo("netheritelowercompleted", "Netherite Leggings & Boots", -1, "lower", "netherite", location(-27.5, 230.5, -187.5, world("world")), true, -90)
 
@@ -135,13 +136,15 @@ on load:
 
 on join:
     wait 2 ticks
-    loop {zombies::items::armorstands::invislist::*}:
-        if {zombies::items::armorstands::armorshide::%loop-value%::*} does not contain "%player%":
-            skjade hide {zombies::items::armorstands::armors::%loop-value%} from player
+    loop {zombies::armorstands::invislist::*}:
+        if {zombies::armorstands::armorshide::%loop-value%::*} does not contain "%player%":
+            skjade hide {zombies::armorstands::armors::%loop-value%} from player
 
 
 on hd hologram click:
-    broadcast "%id of event-hologram%"
+    set {_id::*} to id of event-hologram split at "-"
+    if {_id::1} contains "buy":
+        send "%id of event-hologram%"
     
 command /holocoords:
     trigger:

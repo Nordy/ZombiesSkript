@@ -17,6 +17,7 @@ on ProjectileHitEvent:
                 add {zombies::items::guns::%{_gun}%::goldcrit} to {zombies::playerstats::%event.getEntity().getShooter()%::gold}
                 play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 1.5 to event.getEntity().getShooter()
             else:
+                add {zombies::items::guns::%{_gun}%::goldshot} to {zombies::playerstats::%event.getEntity().getShooter()%::gold}
                 send "&6+%{zombies::items::guns::%{_gun}%::goldshot}% Gold" to event.getEntity().getShooter()
                 play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 2 to event.getEntity().getShooter()
         
@@ -137,9 +138,11 @@ function shoot(gun: text, player: player, block: block, entity: entity):
                                         damage loop-entity by {zombies::items::guns::%{_gun}%::damage}
                                         if distance between loop-entity's head and {_location} < 0.85:
                                             send "&6+%{zombies::items::guns::%{_gun}%::goldcrit}% Gold (Critical hit)" to {_player}
+                                            add {zombies::items::guns::%{_gun}%::goldcrit} to {zombies::playerstats::%{_player}%::gold}
                                             play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 1.5 to {_player}
                                         else:
                                             send "&6+%{zombies::items::guns::%{_gun}%::goldshot}% Gold" to {_player}
+                                            add {zombies::items::guns::%{_gun}%::goldshot} to {zombies::playerstats::%{_player}%::gold}
                                             play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 2 to {_player}
                                 if {_stop} is true:
                                     exit loop
@@ -217,16 +220,20 @@ function shoot(gun: text, player: player, block: block, entity: entity):
                                                     set {_chance} to a random integer between 1 and 100
                                                     if {_chance} is between 1 and 30:
                                                         send "&6+%{zombies::items::guns::%{_gun}%::goldcrit}% Gold (Critical hit)" to {_player}
+                                                        add {zombies::items::guns::%{_gun}%::goldcrit} to {zombies::playerstats::%{_player}%::gold}
                                                         play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 1.5 to {_player}
                                                     else:
                                                         send "&6+%{zombies::items::guns::%{_gun}%::goldshot}% Gold" to {_player}
+                                                        add {zombies::items::guns::%{_gun}%::goldshot} to {zombies::playerstats::%{_player}%::gold}
                                                         play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 2 to {_player} 
                                     damage {_entity} by {zombies::items::guns::%{_gun}%::damage}/2
                                     if {_crit} is true:
                                         send "&6+%{zombies::items::guns::%{_gun}%::goldcrit}% Gold (Critical hit)" to {_player}
+                                        add {zombies::items::guns::%{_gun}%::goldcrit} to {zombies::playerstats::%{_player}%::gold}
                                         play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 1.5 to {_player}
                                     else:
                                         send "&6+%{zombies::items::guns::%{_gun}%::goldshot}% Gold" to {_player}
+                                        add {zombies::items::guns::%{_gun}%::goldshot} to {zombies::playerstats::%{_player}%::gold}
                                         play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 2 to {_player}
                                 else:
                                     loop (distance between {_location} and {_block})+2 times:
@@ -256,9 +263,11 @@ function shoot(gun: text, player: player, block: block, entity: entity):
                                     damage {_entity} by {zombies::items::guns::%{_gun}%::damage}/2
                                     if {_crit} is true:
                                         send "&6+%{zombies::items::guns::%{_gun}%::goldcrit}% Gold (Critical hit)" to {_player}
+                                        add {zombies::items::guns::%{_gun}%::goldcrit} to {zombies::playerstats::%{_player}%::gold}
                                         play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 1.5 to {_player}
                                     else:
                                         send "&6+%{zombies::items::guns::%{_gun}%::goldshot}% Gold" to {_player}
+                                        add {zombies::items::guns::%{_gun}%::goldshot} to {zombies::playerstats::%{_player}%::gold}
                                         play sound "entity.experience_orb.pickup" at volume 0.7 with pitch 2 to {_player}
                                 else:
                                     loop (distance between {_location} and {_block})+2 times:

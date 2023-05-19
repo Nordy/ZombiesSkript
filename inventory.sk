@@ -1,6 +1,6 @@
 on load:
     set {zombies::items::inventory::emptygun} to 1 of lime dye named "&c&oGun Slot" with lore "&8Fill this up by buying more guns!"
-    set {zombies::items::inventory::emptyskill} to 1 of gray dye named "&c&oSkill Slot" with lore "&8Fill this up by buying more abilities!"
+    set {zombies::items::inventory::emptyskill} to 1 of gray dye named "&c&oSkill Slot" with lore "&8Fill this up by buying more skills!"
     set {zombies::items::inventory::emptyperk} to 1 of light blue dye named "&c&oPerk Slot" with lore "&8Fill this up by buying more perks!"
 
 
@@ -51,7 +51,7 @@ on inventory click:
         cancel event
 
 on drop:
-    if player's gamemode is survival:
+    if player's gamemode is not creative:
         cancel event
 
 on death:
@@ -61,3 +61,7 @@ command /defaultinv:
     trigger:
         defaultInventory(player)
         send "ok"
+
+
+on pressure plate:
+    cancel event

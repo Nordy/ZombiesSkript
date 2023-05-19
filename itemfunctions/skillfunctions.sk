@@ -1,0 +1,3 @@
+on right click:
+    if name of player's held item contains "Heal Skill":
+        if 
