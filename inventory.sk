@@ -1,7 +1,14 @@
+
+
 on load:
     set {zombies::items::inventory::emptygun} to 1 of lime dye named "&c&oGun Slot" with lore "&8Fill this up by buying more guns!"
     set {zombies::items::inventory::emptyskill} to 1 of gray dye named "&c&oSkill Slot" with lore "&8Fill this up by buying more skills!"
     set {zombies::items::inventory::emptyperk} to 1 of light blue dye named "&c&oPerk Slot" with lore "&8Fill this up by buying more perks!"
+
+
+
+command /maybe:
+    trigger:
 
 
 function obtainGun(p: player, g: text, s: number = -1):
@@ -47,7 +54,7 @@ function defaultInventory(p: player):
 
 
 on inventory click:
-    if player's gamemode is survival:
+    if player's gamemode is not creative:
         cancel event
 
 on drop:
@@ -63,5 +70,33 @@ command /defaultinv:
         send "ok"
 
 
-on pressure plate:
-    cancel event
+on step on pressure plate:
+    cancel event                    
+
+
+on block interact:
+    if event-entity is a player:
+        if event-entity's gamemode is not creative:
+            cancel event
+    else:
+        cancel event
+
+on right click on any trapdoor:
+    if player's gamemode is not creative:
+        cancel event
+
+on right click on door:
+    if player's gamemode is not creative:
+        cancel event
+
+on right click on item frame:
+    if player's gamemode is not creative:
+        cancel event
+
+on right click on lectern:
+    if player's gamemode is not creative:
+        cancel event
+
+on click on entity:
+    loop all entities in radius 5 around player:
+        send "%loop-entity%"

@@ -1,13 +1,25 @@
 #todo: perk you already have this hologram
 function buyitemholo(id: text, display: text, item: item, cost: number, location: location, type: string):
     delete the hologram with the id "buyitem%{_type}%-%{_id}%"
+    kill {zombies::armorstands::items::buyitem%{_type}%-%{_id}%}
     set {zombies::items::costs::%{_type}%s::%{_id}%::cost} to {_cost}
     create a hd hologram at {_location} with the id "buyitem%{_type}%-%{_id}%"
     add the text line "&6&l&n%{_display}%" to the hologram with id "buyitem%{_type}%-%{_id}%"
     add the text line "&7%{_cost}% Gold" to the hologram with id "buyitem%{_type}%-%{_id}%"
-    add the item {_item} to the hologram with id "buyitem%{_type}%-%{_id}%"
-    add the text line "" to the hologram with id "buyitem%{_type}%-%{_id}%"
+    spawn item display at {_location}
+    set {zombies::armorstands::items::buyitem%{_type}%-%{_id}%} to last spawned entity
+    set {_item} to "%{_item}%"
+    if {_item} contains "wood":
+        replace all "wood" in {_item} with "wooden"
+    replace all " " in {_item} with "_"
+    #todo fix item displays (kill them on server stop and fix their location)
+    if {_item} contains "shield":
+        add nbt from "{item:{id:""%{_item}%"",Count:1s},billboard:""vertical"",transformation:[0.500f, 0.000f, 0.000f,0.200f,0.000f, 0.500f, 0.000f,-0.650f,0.000f, 0.000f, 0.500f,0.200f,0.000f, 0.000f, 0.000f,1.000f],shadow_radius:0f,shadow_strength:0f}" to nbt compound of {zombies::armorstands::items::buyitem%{_type}%-%{_id}%}
+    else:
+        add nbt from "{item:{id:""%{_item}%"",Count:1s},billboard:""vertical"",transformation:[0.600f, 0.000f, 0.000f,0.000f,0.000f, 0.600f, 0.000f,-0.900f,0.000f, 0.000f, 0.600f,0.000f,0.000f, 0.000f, 0.000f,1.000f],shadow_radius:0f,shadow_strength:0f}" to nbt compound of {zombies::armorstands::items::buyitem%{_type}%-%{_id}%}
     loop 4 times:
+        add the text line "" to the hologram with id "buyitem%{_type}%-%{_id}%"
+    loop 6 times:
         make line loop-value of the hologram with id "buyitem%{_type}%-%{_id}%" clickable
     send "&a[Zombies (&lHolos&a)] Registered custom hologram buyitem%{_type}%-%{_id}%!" to console
 
